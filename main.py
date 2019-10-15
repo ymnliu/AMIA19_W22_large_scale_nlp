@@ -65,7 +65,7 @@ if __name__ == '__main__':
     dataset = read_datasets()
     casi_dict = build_dictionary(dataset)
 
-    we_root = sys.args[1]
+    we_root = sys.argv[1]
 
     print(we_root)
 
