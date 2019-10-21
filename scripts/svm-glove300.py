@@ -12,7 +12,7 @@ from sklearn.metrics import f1_score
 from sklearn.metrics import precision_recall_fscore_support
 
 # get model and convert to w2v
-glove_input_file = 'models/w2v_glove_300.txt'
+glove_input_file = '/data/w2v_glove_300.txt'
 word2vec_output_file = 'w2v.txt'
 glove2word2vec(glove_input_file, word2vec_output_file)
 model = KeyedVectors.load_word2vec_format(word2vec_output_file, binary=False)
@@ -47,19 +47,20 @@ def vector_breakage(sentence):
             None
     return word_vectors_list
 
+# load prepartitioned train/test sets
+test = pd.read_csv("data/test.csv")
+train = pd.read_csv("data/test.csv")
+
 # load full data set
-df = pd.read_csv("data/full.csv")
+frames = [test, train]
+df = pd.concat(frames)
 df = df[['text','expansion']]
 df['vec'] = [sentence_vector(x) for x in df.text]
 df.expansion.unique()
 
-# load prepartitioned train/test sets
-test = pd.read_csv("data/test.csv")
 test = test[['text','expansion', 'case']]
-test['vec'] = [sentence_vector(x) for x in test.text]
-
-train = pd.read_csv("data/test.csv")
 train = train[['text','expansion']]
+test['vec'] = [sentence_vector(x) for x in test.text]
 train['vec'] = [sentence_vector(x) for x in train.text]
 
 # vectorize

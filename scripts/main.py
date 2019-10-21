@@ -9,7 +9,7 @@ import sys
 logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
 
 
-def read_datasets(root='data'):
+def read_datasets(root='../data'):
 
     dataset = {}
 
@@ -36,7 +36,7 @@ def read_datasets(root='data'):
     return dataset
 
 
-def build_dictionary(dataset, out_path='models/casi.dict'):
+def build_dictionary(dataset, out_path='../models/casi.dict'):
     texts = []
 
     for tag in ['train', 'test']:
@@ -71,8 +71,8 @@ if __name__ == '__main__':
 
     trim_word_embeddings(casi_dict,
                          os.path.join(we_root, 'glove.6B.50d.txt'),
-                         'models/w2v_glove_50.txt')
+                         '../models/w2v_glove_50.txt')
 
     trim_word_embeddings(casi_dict,
                          os.path.join(we_root, 'glove.6B.300d.txt'),
-                         'models/w2v_glove_300.txt')
+                         '../models/w2v_glove_300.txt')
