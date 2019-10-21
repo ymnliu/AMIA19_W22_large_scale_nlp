@@ -12,13 +12,13 @@ from sklearn.metrics import f1_score
 from sklearn.metrics import precision_recall_fscore_support
 
 # get model and convert to w2v
-glove_input_file = '/data/w2v_glove_300.txt'
+glove_input_file = '/data/w2v_glove_300.txt' # directory for use in docker; change path accordingly
 word2vec_output_file = 'w2v.txt'
 glove2word2vec(glove_input_file, word2vec_output_file)
 model = KeyedVectors.load_word2vec_format(word2vec_output_file, binary=False)
 
 # get stop words
-sw = "data/stopwords.txt"
+sw = "data/stopwords.txt" # directory for use in docker; change path accordingly
 with open(sw) as f:
     stop_words = f.read().splitlines()
 
@@ -48,8 +48,8 @@ def vector_breakage(sentence):
     return word_vectors_list
 
 # load prepartitioned train/test sets
-test = pd.read_csv("data/test.csv")
-train = pd.read_csv("data/test.csv")
+test = pd.read_csv("data/test.csv") # directories for use in docker; change path accordingly
+train = pd.read_csv("data/train.csv")
 
 # load full data set
 frames = [test, train]
