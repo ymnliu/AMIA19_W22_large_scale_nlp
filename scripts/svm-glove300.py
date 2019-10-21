@@ -48,8 +48,8 @@ def vector_breakage(sentence):
     return word_vectors_list
 
 # load prepartitioned train/test sets
-test = pd.read_csv("data/test.csv") # directories for use in docker; change path accordingly
-train = pd.read_csv("data/train.csv")
+test = pd.read_csv(".data/test.csv") # directories for use in docker; change path accordingly
+train = pd.read_csv("data/AMIA_train_set.csv")
 
 # load full data set
 frames = [test, train]
