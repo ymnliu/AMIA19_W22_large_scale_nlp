@@ -37,19 +37,8 @@ def get_sentence_vector(sentence):
 test = pd.read_csv("../data/test.csv") # directories for use in docker; change path accordingly
 train = pd.read_csv("../data/AMIA_train_set.csv")
 
-# load full data set
-frames = [test, train]
-df = pd.concat(frames)
-df['vec'] = [get_sentence_vector(x) for x in df.text]
-
-# test = test[['text','expansion', 'case', 'abbrev']]
-# train = train[['text','expansion', 'case', 'abbrev']]
 test['vec'] = [get_sentence_vector(x) for x in test.text]
 train['vec'] = [get_sentence_vector(x) for x in train.text]
-
-# whole set for cross validation
-X = np.array(list(df.vec))
-y = df.expansion
 
 train_grouped_abbr = train.groupby('abbrev')
 test_grouped_abbr = test.groupby('abbrev')
