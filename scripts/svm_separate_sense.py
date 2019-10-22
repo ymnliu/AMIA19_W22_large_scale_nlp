@@ -1,15 +1,10 @@
-import sys
 from gensim.models import KeyedVectors
 from gensim.scripts.glove2word2vec import glove2word2vec
 from nltk import word_tokenize
 import pandas as pd
 import numpy as np
-from sklearn.model_selection import train_test_split
 from sklearn.svm import SVC
 from sklearn.metrics import confusion_matrix, classification_report
-from sklearn.model_selection import cross_val_score
-from sklearn.metrics import f1_score
-from sklearn.metrics import precision_recall_fscore_support
 
 # get model and convert to w2v
 glove_input_file = '../models/w2v_glove_300.txt' # directory for use in docker; change path accordingly
@@ -42,23 +37,13 @@ def get_sentence_vector(sentence):
 test = pd.read_csv("../data/test.csv") # directories for use in docker; change path accordingly
 train = pd.read_csv("../data/AMIA_train_set.csv")
 
-# load full data set
-frames = [test, train]
-df = pd.concat(frames)
-df['vec'] = [get_sentence_vector(x) for x in df.text]
-
-# test = test[['text','expansion', 'case', 'abbrev']]
-# train = train[['text','expansion', 'case', 'abbrev']]
 test['vec'] = [get_sentence_vector(x) for x in test.text]
 train['vec'] = [get_sentence_vector(x) for x in train.text]
-
-# whole set for cross validation
-X = np.array(list(df.vec))
-y = df.expansion
 
 train_grouped_abbr = train.groupby('abbrev')
 test_grouped_abbr = test.groupby('abbrev')
 
+# Loop through different abbreviations.
 for abbr in train.abbrev.unique():
 
     train_abbr = train_grouped_abbr.get_group(abbr)
@@ -82,22 +67,19 @@ for abbr in train.abbrev.unique():
 
     print(classification_report(y_test, pred))
     print()
-    print(f'example_text\t\t\t\t\t\ttrue_abbr\t\t\tpred_abbr')
+    print(f'examples (first 5 cases)\t\t\t\t\t\ttrue_abbr\t\t\tpred_abbr')
 
+    # Print first 5 cases
     i = 0
     for input_row, true_abbr, pred_abbr in zip(train_abbr.iterrows(), y_test, pred):
 
-        sn_start = max(input_row[1].start - 30, 0)
-        sn_end = min(input_row[1].end + 30, len(input_row[1].text))
+        sn_start = max(input_row[1].start - 25, 0)
+        sn_end = min(input_row[1].end + 25, len(input_row[1].text))
 
         example_text = input_row[1].text[sn_start: sn_end]
-        print(f'... {example_text:<70} ...\t\t{true_abbr:<40}\t{pred_abbr}')
+        print(f'... {example_text} ...\t{true_abbr:<35}\t{pred_abbr}')
 
         if i == 5:
             break
 
         i += 1
-
-
-
-
