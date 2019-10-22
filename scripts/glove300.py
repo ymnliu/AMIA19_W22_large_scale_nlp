@@ -1,19 +1,23 @@
 import sys
+from sys import argv
 from gensim.models import KeyedVectors
 from gensim.scripts.glove2word2vec import glove2word2vec
 from nltk.tokenize import TreebankWordTokenizer
 import pandas as pd
 import numpy as np
-from sklearn.model_selection import train_test_split
 from sklearn.svm import SVC
+from sklearn.linear_model import LogisticRegression
+from sklearn.neural_network import MLPClassifier
 from sklearn.metrics import confusion_matrix
 from sklearn.model_selection import cross_val_score
 from sklearn.metrics import f1_score
 from sklearn.metrics import precision_recall_fscore_support
 
+classifier=sys.argv[1]
+
 # get model and convert to w2v
-glove_input_file = '../models/w2v_glove_300.txt' # directory for use in docker; change path accordingly
-word2vec_output_file = '/tmp/w2v.txt'
+glove_input_file = '/data/models/w2v_glove_300.txt' # directory for use in docker; change path accordingly
+word2vec_output_file = 'w2v.txt'
 glove2word2vec(glove_input_file, word2vec_output_file)
 model = KeyedVectors.load_word2vec_format(word2vec_output_file, binary=False)
 
@@ -77,43 +81,47 @@ y_train = train.expansion
 X_test = np.array(list(test.vec))
 y_test = test.expansion
 
+if classifier == 'svm':
+    # set up SVM
+    clf = SVC(C=1.0, kernel='linear', degree=1).fit(X_train, y_train)
 
+elif classifier == 'logistic':
+    clf = LogisticRegression().fit(X_train, y_train)
 
-# set up SVM
-clf = SVC(C=1.0, kernel='linear', degree=1, probability=True).fit(X_train, y_train)
-
-
-within_candidate = True
-if not within_candidate:
-    # raw prediction
-    # get CV predictions and evaluation data
-    pred = clf.predict(X_test)
-    cm = confusion_matrix(y_test, pred, labels=list(set(df.expansion)))
-    cross_val_scores = cross_val_score(clf, X, y, cv=7)
-
-    predicted_expansion = list(pred)
-    case = test['case'].tolist()
-
-    results = pd.DataFrame(
-        {'case': case,
-         'expansion': predicted_expansion
-        })
-
-    print('PREDICTED RESULTS:')
-    print(results)
-    print('=========================================')
-
-    print('accuracy: {}'.format(cross_val_scores))
-    print()
-    print(set(df.expansion))
-    print([len(df[df.expansion == x]) for x in set(df.expansion)])
-    print()
-    print(cm)
-    print()
-    print(f1_score(y_test,pred,average = 'weighted'))
+elif classifier == 'mlp':
+    clf = MLPClassifier().fit(X_train, y_train)
 
 else:
-    # prediction within reasonable candidate
+    print('INVALID OPTION!')
 
-    # get CV predictions and evaluation data
-    pred = clf.predict_proba(X_test)
+# get CV predictions and evaluation data
+pred = clf.predict(X_test)
+cm = confusion_matrix(y_test, pred,labels=list(set(df.expansion)))
+cross_val_scores = cross_val_score(clf, X, y, cv=7)
+
+predicted_expansion = list(pred)
+case = test['case'].tolist()
+
+results = pd.DataFrame(
+    {'case': case,
+        'expansion': predicted_expansion
+    })
+
+print('PREDICTED RESULTS:')
+print('classifier type', classifier)
+print(results)
+print('=========================================')
+
+print('accuracy: {}'.format(cross_val_scores))
+print()
+print(set(df.expansion))
+print([len(df[df.expansion == x]) for x in set(df.expansion)])
+print()
+print(cm)
+print()
+print(f1_score(y_test,pred,average = 'weighted'))
+print()
+print('writing predictions to CSV!')
+
+results.to_csv('/data/' + classifier + '_results.csv')
+>>>>>>> df151a779b54acfe1ffec359f2680a19ea12c9c1:scripts/glove300.py

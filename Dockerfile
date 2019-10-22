@@ -12,5 +12,4 @@ RUN pip install gensim
 
 WORKDIR /home/tutorial
 
-ENTRYPOINT [ "python", "svm-glove300.py"]
 
