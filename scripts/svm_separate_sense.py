@@ -1,15 +1,10 @@
-import sys
 from gensim.models import KeyedVectors
 from gensim.scripts.glove2word2vec import glove2word2vec
 from nltk import word_tokenize
 import pandas as pd
 import numpy as np
-from sklearn.model_selection import train_test_split
 from sklearn.svm import SVC
 from sklearn.metrics import confusion_matrix, classification_report
-from sklearn.model_selection import cross_val_score
-from sklearn.metrics import f1_score
-from sklearn.metrics import precision_recall_fscore_support
 
 # get model and convert to w2v
 glove_input_file = '../models/w2v_glove_300.txt' # directory for use in docker; change path accordingly
@@ -59,6 +54,7 @@ y = df.expansion
 train_grouped_abbr = train.groupby('abbrev')
 test_grouped_abbr = test.groupby('abbrev')
 
+# Loop through different abbreviations.
 for abbr in train.abbrev.unique():
 
     train_abbr = train_grouped_abbr.get_group(abbr)
@@ -82,22 +78,19 @@ for abbr in train.abbrev.unique():
 
     print(classification_report(y_test, pred))
     print()
-    print(f'example_text\t\t\t\t\t\ttrue_abbr\t\t\tpred_abbr')
+    print(f'examples (first 5 cases)\t\t\t\t\t\ttrue_abbr\t\t\tpred_abbr')
 
+    # Print first 5 cases
     i = 0
     for input_row, true_abbr, pred_abbr in zip(train_abbr.iterrows(), y_test, pred):
 
-        sn_start = max(input_row[1].start - 30, 0)
-        sn_end = min(input_row[1].end + 30, len(input_row[1].text))
+        sn_start = max(input_row[1].start - 25, 0)
+        sn_end = min(input_row[1].end + 25, len(input_row[1].text))
 
         example_text = input_row[1].text[sn_start: sn_end]
-        print(f'... {example_text:<70} ...\t\t{true_abbr:<40}\t{pred_abbr}')
+        print(f'... {example_text} ...\t{true_abbr:<35}\t{pred_abbr}')
 
         if i == 5:
             break
 
         i += 1
-
-
-
-
