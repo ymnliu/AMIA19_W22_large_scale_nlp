@@ -89,7 +89,7 @@ case = test['case'].tolist()
 
 results = pd.DataFrame(
     {'case': case,
-     'expansion': predicted_expansion
+        'expansion': predicted_expansion
     })
 
 print('PREDICTED RESULTS:')
@@ -104,3 +104,7 @@ print()
 print(cm)
 print()
 print(f1_score(y_test,pred,average = 'weighted'))
+print()
+print('writing predictions to CSV!')
+
+results.to_csv('/data/results.csv')
