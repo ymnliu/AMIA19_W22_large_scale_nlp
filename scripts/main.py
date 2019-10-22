@@ -14,10 +14,8 @@ def read_datasets(root='../data'):
     dataset = {}
 
     for tag in ['train', 'test']:
-        fn = tag + '.csv'
-
         res = []
-        with open(os.path.join(root, fn), encoding='utf-8', errors='ignore') as f:
+        with open(os.path.join(root, tag + '.csv'), encoding='utf-8', errors='ignore') as f:
             csv_reader = csv.reader(f)
             line_count = 0
 

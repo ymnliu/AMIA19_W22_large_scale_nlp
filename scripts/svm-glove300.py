@@ -12,15 +12,16 @@ from sklearn.metrics import f1_score
 from sklearn.metrics import precision_recall_fscore_support
 
 # get model and convert to w2v
-glove_input_file = '/data/w2v_glove_300.txt' # directory for use in docker; change path accordingly
-word2vec_output_file = 'w2v.txt'
+glove_input_file = '../models/w2v_glove_300.txt' # directory for use in docker; change path accordingly
+word2vec_output_file = '/tmp/w2v.txt'
 glove2word2vec(glove_input_file, word2vec_output_file)
 model = KeyedVectors.load_word2vec_format(word2vec_output_file, binary=False)
 
 # get stop words
-sw = "data/stopwords.txt" # directory for use in docker; change path accordingly
+sw = "../data/stopwords.txt" # directory for use in docker; change path accordingly
 with open(sw) as f:
     stop_words = f.read().splitlines()
+
 
 def sentence_vector(sentence):
     word_list = TreebankWordTokenizer().tokenize(sentence)
@@ -30,8 +31,11 @@ def sentence_vector(sentence):
         try:
             word_vectors.append(model[x])
         except KeyError:
-            None    
+            # TODO: exception handling
+            print("Exception happens in \"sentence_vector\" " + str(x))
+
     return sum(word_vectors)/len(word_vectors)
+
 
 def vector_breakage(sentence):
     word_list = TreebankWordTokenizer().tokenize(sentence)
@@ -42,14 +46,14 @@ def vector_breakage(sentence):
             if len(model[x])==200:
                 word_vectors_list.append(x)
         except:
-            None
-        else:
-            None
+            # TODO: exception handling
+            print("Exception happens in \"vector_breakage\": " + str(x))
+
     return word_vectors_list
 
 # load prepartitioned train/test sets
-test = pd.read_csv("data/test.csv") # directories for use in docker; change path accordingly
-train = pd.read_csv("data/AMIA_train_set.csv")
+test = pd.read_csv("../data/test.csv") # directories for use in docker; change path accordingly
+train = pd.read_csv("../data/AMIA_train_set.csv")
 
 # load full data set
 frames = [test, train]
@@ -58,49 +62,58 @@ df = df[['text','expansion']]
 df['vec'] = [sentence_vector(x) for x in df.text]
 df.expansion.unique()
 
-test = test[['text','expansion', 'case']]
+test = test[['text','expansion', 'case', 'abbrev']]
 train = train[['text','expansion']]
 test['vec'] = [sentence_vector(x) for x in test.text]
 train['vec'] = [sentence_vector(x) for x in train.text]
 
 # vectorize
-X = list(df.vec)
-X = np.array(X)
+X = np.array(list(df.vec))
 y = df.expansion
 
-X1 = list(train.vec)
-X_train = np.array(X1)
+X_train = np.array(list(train.vec))
 y_train = train.expansion
 
-X2 = list(test.vec)
-X_test = np.array(X2)
+X_test = np.array(list(test.vec))
 y_test = test.expansion
 
+
+
 # set up SVM
-clf = SVC(C=1.0, kernel='linear', degree=1).fit(X_train, y_train)
+clf = SVC(C=1.0, kernel='linear', degree=1, probability=True).fit(X_train, y_train)
 
-# get CV predictions and evaluation data
-pred = clf.predict(X_test)
-cm = confusion_matrix(y_test, pred,labels=list(set(df.expansion)))
-cross_val_scores = cross_val_score(clf, X, y, cv=7)
 
-predicted_expansion = list(pred)
-case = test['case'].tolist()
+within_candidate = True
+if not within_candidate:
+    # raw prediction
+    # get CV predictions and evaluation data
+    pred = clf.predict(X_test)
+    cm = confusion_matrix(y_test, pred, labels=list(set(df.expansion)))
+    cross_val_scores = cross_val_score(clf, X, y, cv=7)
 
-results = pd.DataFrame(
-    {'case': case,
-     'expansion': predicted_expansion
-    })
+    predicted_expansion = list(pred)
+    case = test['case'].tolist()
 
-print('PREDICTED RESULTS:')
-print(results)
-print('=========================================')
+    results = pd.DataFrame(
+        {'case': case,
+         'expansion': predicted_expansion
+        })
 
-print('accuracy: {}'.format(cross_val_scores))
-print()
-print(set(df.expansion))
-print([len(df[df.expansion == x]) for x in set(df.expansion)])
-print()
-print(cm)
-print()
-print(f1_score(y_test,pred,average = 'weighted'))
+    print('PREDICTED RESULTS:')
+    print(results)
+    print('=========================================')
+
+    print('accuracy: {}'.format(cross_val_scores))
+    print()
+    print(set(df.expansion))
+    print([len(df[df.expansion == x]) for x in set(df.expansion)])
+    print()
+    print(cm)
+    print()
+    print(f1_score(y_test,pred,average = 'weighted'))
+
+else:
+    # prediction within reasonable candidate
+
+    # get CV predictions and evaluation data
+    pred = clf.predict_proba(X_test)
