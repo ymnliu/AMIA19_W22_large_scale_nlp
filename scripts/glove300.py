@@ -124,4 +124,3 @@ print()
 print('writing predictions to CSV!')
 
 results.to_csv('/data/' + classifier + '_results.csv')
->>>>>>> df151a779b54acfe1ffec359f2680a19ea12c9c1:scripts/glove300.py
