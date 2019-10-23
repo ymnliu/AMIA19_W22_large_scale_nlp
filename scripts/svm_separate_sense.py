@@ -43,6 +43,10 @@ train['vec'] = [get_sentence_vector(x) for x in train.text]
 train_grouped_abbr = train.groupby('abbrev')
 test_grouped_abbr = test.groupby('abbrev')
 
+# load full data set
+frames = [test, train]
+df = pd.concat(frames)
+
 # Loop through different abbreviations.
 for abbr in train.abbrev.unique():
 
