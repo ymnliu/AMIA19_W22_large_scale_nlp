@@ -10,6 +10,8 @@ RUN pip install pandas
 RUN pip install nltk
 RUN pip install gensim
 
+RUN [ "python", "-c", "import nltk; nltk.download('punkt')" ]
+
 WORKDIR /home/tutorial
 
 
