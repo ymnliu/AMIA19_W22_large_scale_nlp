@@ -8,6 +8,8 @@ from sklearn.metrics import confusion_matrix, classification_report
 from keras.models import Sequential
 from keras.layers import Dense, Embedding, Dropout, Conv1D, GlobalMaxPooling1D, Activation
 from keras.preprocessing import sequence
+from keras.callbacks import EarlyStopping
+
 
 from keras.wrappers.scikit_learn import KerasClassifier
 from sklearn.model_selection import StratifiedKFold
@@ -38,7 +40,7 @@ embedding_dims = 50
 filters = 250
 kernel_size = 3
 hidden_dims = 250
-epochs = 2
+epochs = 20
 
 
 def get_input_seq(sentence):
@@ -91,10 +93,10 @@ def create_cnn_model(output_dim, max_features):
 
     model.add(Dense(output_dim, activation='sigmoid'))
     # Compile model
-    model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
+    model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'],)
     return model
 
-
+print_model_summary = True
 # Loop through different abbreviations.
 for abbr in train.abbrev.unique():
 
@@ -118,8 +120,13 @@ for abbr in train.abbrev.unique():
 
     model = create_cnn_model(len(encoder.classes_), max(X_train.max(), X_test.max()) + 1)
 
+    if print_model_summary:
+        model.summary()
+        print_model_summary = False
+
     history = model.fit(X_train, y_train,
                         epochs=epochs,
+                        callbacks=[EarlyStopping(monitor='val_loss', verbose=1, patience=4)],
                         verbose=2,
                         validation_data=(X_test, y_test),
                         batch_size=batch_size)
@@ -129,32 +136,4 @@ for abbr in train.abbrev.unique():
     y_test_idx = y_test.argmax(axis=1)
     target_names = [encoder.classes_[idx] for idx in set(y_test_idx)]
 
-
     print(classification_report(y_test_idx, y_pred.argmax(axis=1), target_names=target_names))
-
-"""
-    cm = confusion_matrix(y_test, pred, labels=list(set(train_grouped_abbr.expansion)))
-    print()
-    print("##" * 20)
-    print(" " * 20 + abbr)
-    print("##" * 20)
-
-    print(classification_report(y_test, pred))
-    print()
-    print(f'examples (first 5 cases)\t\t\t\t\t\ttrue_abbr\t\t\tpred_abbr')
-
-    # Print first 5 cases
-    i = 0
-    for input_row, true_abbr, pred_abbr in zip(train_abbr.iterrows(), y_test, pred):
-
-        sn_start = max(input_row[1].start - 25, 0)
-        sn_end = min(input_row[1].end + 25, len(input_row[1].text))
-
-        example_text = input_row[1].text[sn_start: sn_end]
-        print(f'... {example_text} ...\t{true_abbr:<35}\t{pred_abbr}')
-
-        if i == 5:
-            break
-
-        i += 1
-"""
