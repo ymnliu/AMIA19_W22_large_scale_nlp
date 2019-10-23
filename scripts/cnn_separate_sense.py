@@ -96,9 +96,13 @@ def create_cnn_model(output_dim, max_features):
     model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'],)
     return model
 
+
 print_model_summary = True
+
 # Loop through different abbreviations.
 for abbr in train.abbrev.unique():
+    if abbr == 'FISH':
+        continue
 
     train_abbr = train_grouped_abbr.get_group(abbr)
     test_abbr = test_grouped_abbr.get_group(abbr)
@@ -116,7 +120,6 @@ for abbr in train.abbrev.unique():
     print("##" * 20)
     print(" " * 20 + abbr)
     print("##" * 20)
-
 
     model = create_cnn_model(len(encoder.classes_), max(X_train.max(), X_test.max()) + 1)
 
