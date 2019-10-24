@@ -41,9 +41,9 @@ def get_predictive_model(classifier):
 
     # load prepartitioned train/test sets
     #test = pd.read_csv("data/test.csv") # directories for use in docker; change path accordingly
-    #train = pd.read_csv("data/AMIA_train_set.csv")
+    #train = pd.read_csv("data/train.csv")
     test = pd.read_csv("../data/test.csv") # directories for use for local testing; change path accordingly
-    train = pd.read_csv("../data/AMIA_train_set.csv")
+    train = pd.read_csv("../data/train.csv")
 
     test['vec'] = [get_sentence_vector(x) for x in test.text]
     train['vec'] = [get_sentence_vector(x) for x in train.text]
