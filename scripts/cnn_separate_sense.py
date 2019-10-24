@@ -2,18 +2,11 @@ from gensim.models import KeyedVectors
 from gensim.scripts.glove2word2vec import glove2word2vec
 from nltk import word_tokenize
 import pandas as pd
-import numpy as np
-from sklearn.svm import SVC
 from sklearn.metrics import confusion_matrix, classification_report
 from keras.models import Sequential
 from keras.layers import Dense, Embedding, Dropout, Conv1D, GlobalMaxPooling1D, Activation
 from keras.preprocessing import sequence
 from keras.callbacks import EarlyStopping
-
-
-from keras.wrappers.scikit_learn import KerasClassifier
-from sklearn.model_selection import StratifiedKFold
-from sklearn.model_selection import cross_val_score
 from keras.preprocessing.text import Tokenizer
 
 from sklearn.preprocessing import LabelBinarizer
@@ -59,7 +52,6 @@ def get_input_seq(sentence):
 test = pd.read_csv("../data/test.csv")      # directories for use in docker; change path accordingly
 train = pd.read_csv("../data/AMIA_train_set.csv")
 
-
 test['seq'] = [get_input_seq(sent) for sent in test.text]
 train['seq'] = [get_input_seq(sent) for sent in train.text]
 
@@ -72,7 +64,6 @@ def create_cnn_model(output_dim, max_features):
     # create model
     model = Sequential()
     model.add(Embedding(max_features, embedding_dims, input_length=maxlen))
-
     model.add(Dropout(0.2))
 
     # we add a Convolution1D, which will learn filters
