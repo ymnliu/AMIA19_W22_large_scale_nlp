@@ -4,9 +4,11 @@ from gensim.scripts.glove2word2vec import glove2word2vec
 from nltk import word_tokenize
 import pandas as pd
 import numpy as np
+from sklearn import tree
 from sklearn.svm import SVC
 from sklearn.linear_model import LogisticRegression
 from sklearn.neural_network import MLPClassifier
+from sklearn.ensemble import BaggingClassifier, AdaBoostClassifier, RandomForestClassifier
 from sklearn.metrics import confusion_matrix, classification_report
 
 def get_predictive_model(classifier):
@@ -76,11 +78,23 @@ def get_predictive_model(classifier):
 
         elif classifier == 'mlp':
             clf = MLPClassifier().fit(X_train, y_train)
+        
+        elif classifier == 'bagging':
+            clf = BaggingClassifier(tree.DecisionTreeClassifier(random_state=1)).fit(X_train,y_train)
+        
+        elif classifier == 'boosting':
+            num_trees = 70
+            clf = AdaBoostClassifier(n_estimators=num_trees, random_state=seed).fit(X_train, y_train)
+        
+        elif classifier == 'rf':
+            clf = RandomForestClassifier().fit(X_train, y_train)
 
         else:
             print('INVALID OPTION!')
 
         pred = clf.predict(X_test)
+        (pd.DataFrame({'predictions':pred})).to_csv("../data/%s_%s.csv" % (classifier,abbr))
+        
         cm = confusion_matrix(y_test, pred, labels=list(set(df.expansion)))
         print()
         print("MODEL -> ", classifier)
