@@ -126,6 +126,7 @@ for abbr in train.abbrev.unique():
                         batch_size=batch_size)
 
     y_pred = model.predict(X_test)
+    (pd.DataFrame({'predictions':y_pred})).to_csv("../data/cnn_%s.csv" % (abbr))
 
     y_test_idx = y_test.argmax(axis=1)
     target_names = [encoder.classes_[idx] for idx in set(y_test_idx)]
