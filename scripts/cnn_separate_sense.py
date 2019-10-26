@@ -50,7 +50,8 @@ def get_input_seq(sentence):
 
 # load prepartitioned train/test sets
 test = pd.read_csv("../data/test.csv")      # directories for use in docker; change path accordingly
-train = pd.read_csv("../data/AMIA_train_set.csv")
+#train = pd.read_csv("../data/AMIA_train_set.csv")
+train = pd.read_csv("../data/train.csv")
 
 test['seq'] = [get_input_seq(sent) for sent in test.text]
 train['seq'] = [get_input_seq(sent) for sent in train.text]
@@ -126,7 +127,7 @@ for abbr in train.abbrev.unique():
                         batch_size=batch_size)
 
     y_pred = model.predict(X_test)
-    (pd.DataFrame({'predictions':y_pred})).to_csv("../data/cnn_%s.csv" % (abbr))
+    (pd.DataFrame(y_pred)).to_csv("../data/cnn_%s.csv" % (abbr))
 
     y_test_idx = y_test.argmax(axis=1)
     target_names = [encoder.classes_[idx] for idx in set(y_test_idx)]
