@@ -1,4 +1,4 @@
-import click
+opimport click
 from gensim.models import KeyedVectors
 from gensim.scripts.glove2word2vec import glove2word2vec
 from nltk import word_tokenize
