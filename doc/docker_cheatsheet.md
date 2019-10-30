@@ -11,7 +11,7 @@ docker build --target glove300 -t namespace/glove300:n .
 
 ## Run image:
 
-1. ssh into docker container
+### ssh into docker container
 
 ```
 docker run -it -v /path to project/AMIA19_W22_large_scale_nlp/:/data nlpieumn/glove300:2 /bin/bash
