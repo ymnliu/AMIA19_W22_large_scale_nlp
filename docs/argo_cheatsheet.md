@@ -14,6 +14,12 @@ argo lint <template_name.yaml>
 argo submit <template_name.yaml>  #returns the workflow id as xxx-workflow-name-xxx
 ```
 
+## Delete Argo workflow (and associated pods)
+
+```
+argo delete xxx-workflow-name-xxx #use the workflow id returned from the 'submit' command above
+```
+
 ## List all workflows and their status
 
 ```
