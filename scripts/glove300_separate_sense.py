@@ -1,3 +1,4 @@
+import os
 import click
 from gensim.models import KeyedVectors
 from gensim.scripts.glove2word2vec import glove2word2vec
@@ -10,7 +11,6 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.neural_network import MLPClassifier
 from sklearn.ensemble import BaggingClassifier, AdaBoostClassifier, RandomForestClassifier
 from sklearn.metrics import confusion_matrix, classification_report
-import os
 
 # Set environment variable in Docker to use correct directory
 # if None specified, then default to local machine

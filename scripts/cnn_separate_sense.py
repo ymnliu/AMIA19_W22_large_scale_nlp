@@ -1,3 +1,4 @@
+import os
 import click
 from gensim.models import KeyedVectors
 from gensim.scripts.glove2word2vec import glove2word2vec
@@ -10,6 +11,13 @@ from keras.preprocessing import sequence
 from keras.callbacks import EarlyStopping
 from keras.preprocessing.text import Tokenizer
 from sklearn.preprocessing import LabelBinarizer
+
+# Set environment variable in Docker to use correct directory
+# if None specified, then default to local machine
+try:  
+   in_docker = os.environ["DOCKER"]
+except:
+   in_docker = None 
 
 class DefaultHelp(click.Command):
     def __init__(self, *args, **kwargs):
@@ -31,16 +39,21 @@ def get_predictive_model():
     tokenizer = Tokenizer(num_words=5000)
 
     # get model and convert to w2v
-    #glove_input_file = '/data/models/w2v_glove_300.txt' # directory for use in docker; change path accordingly
-    glove_input_file = '../models/w2v_glove_300.txt' # directory for use for local testing change path accordingly
+    if in_docker == 'True':
+        input_dir = '/data/models/'
+        output_dir = '/data/data/'
+    else:
+        input_dir = 'models/'
+        output_dir = 'data/'
+
+    glove_input_file = input_dir + 'w2v_glove_300.txt'
+
     word2vec_output_file = '/tmp/w2v.txt'
     glove2word2vec(glove_input_file, word2vec_output_file)
     wv_model = KeyedVectors.load_word2vec_format(word2vec_output_file, binary=False)
 
     # get stop words
-    #sw = "data/stopwords.txt" # directory for use in docker; change path accordingly
-    sw = "../data/stopwords.txt" # directory for use for local testing; change path accordingly
-
+    sw = "data/stopwords.txt" # directory for use for local testing; change path accordingly
     with open(sw) as f:
         stop_words = f.read().splitlines()
 
@@ -70,8 +83,8 @@ def get_predictive_model():
     # load prepartitioned train/test sets
     #test = pd.read_csv("data/test.csv") # directories for use in docker; change path accordingly
     #train = pd.read_csv("data/train.csv")
-    test = pd.read_csv("../data/test.csv") # directories for use for local testing; change path accordingly
-    train = pd.read_csv("../data/train.csv")
+    test = pd.read_csv("data/test.csv") # directories for use for local testing; change path accordingly
+    train = pd.read_csv("data/train.csv")
 
     test['seq'] = [get_input_seq(sent) for sent in test.text]
     train['seq'] = [get_input_seq(sent) for sent in train.text]
@@ -149,7 +162,7 @@ def get_predictive_model():
         y_pred = model.predict(X_test)
 
         #(pd.DataFrame(y_pred)).to_csv("/data/data/cnn_%s.csv" % (abbr)) # use for persistent storage
-        (pd.DataFrame(y_pred)).to_csv("../data/cnn_%s.csv" % (abbr))
+        (pd.DataFrame(y_pred)).to_csv(output_dir + "cnn_%s.csv" % (abbr))
 
         y_test_idx = y_test.argmax(axis=1)
         target_names = [encoder.classes_[idx] for idx in set(y_test_idx)]
