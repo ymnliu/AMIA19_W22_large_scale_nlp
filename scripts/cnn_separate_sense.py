@@ -35,7 +35,7 @@ def get_predictive_model():
     glove_input_file = '../models/w2v_glove_300.txt' # directory for use for local testing change path accordingly
     word2vec_output_file = '/tmp/w2v.txt'
     glove2word2vec(glove_input_file, word2vec_output_file)
-    model = KeyedVectors.load_word2vec_format(word2vec_output_file, binary=False)
+    wv_model = KeyedVectors.load_word2vec_format(word2vec_output_file, binary=False)
 
     # get stop words
     #sw = "data/stopwords.txt" # directory for use in docker; change path accordingly
@@ -152,7 +152,7 @@ def get_predictive_model():
         y_test_idx = y_test.argmax(axis=1)
         target_names = [encoder.classes_[idx] for idx in set(y_test_idx)]
 
-        # print(classification_report(y_test_idx, y_pred.argmax(axis=1), target_names=target_names))
+        print(classification_report(y_test_idx, y_pred.argmax(axis=1), target_names=target_names))
 
 @click.command()
 @click.option('-c', '--classifier', 'classifier', default='keras', help='Run predictive model for cnn/Keras classifier', type=click.STRING)
