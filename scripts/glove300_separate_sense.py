@@ -10,18 +10,34 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.neural_network import MLPClassifier
 from sklearn.ensemble import BaggingClassifier, AdaBoostClassifier, RandomForestClassifier
 from sklearn.metrics import confusion_matrix, classification_report
+import os
+
+
+# Set environment variable in Docker to use correct directory
+# if None specified, then default to local machine
+try:  
+   in_docker = os.environ["DOCKER"]
+except:
+   in_docker = None 
 
 def get_predictive_model(classifier):
     # get model and convert to w2v
-    #glove_input_file = '/data/models/w2v_glove_300.txt' # directory for use in docker; change path accordingly
-    glove_input_file = '../models/w2v_glove_300.txt' # directory for use for local testing change path accordingly
+    if in_docker:
+        input_dir = '/data/models/'
+        output_dir = '/data/data/'
+    else:
+        input_dir = 'models/'
+        output_dir = 'data/'
+
+    glove_input_file = input_dir + 'w2v_glove_300.txt'
+    
     word2vec_output_file = '/tmp/w2v.txt'
     glove2word2vec(glove_input_file, word2vec_output_file)
     model = KeyedVectors.load_word2vec_format(word2vec_output_file, binary=False)
 
     # get stop words
-    #sw = "data/stopwords.txt" # directory for use in docker; change path accordingly
-    sw = "../data/stopwords.txt" # directory for use for local testing; change path accordingly
+
+    sw = "data/stopwords.txt"
     with open(sw) as f:
         stop_words = f.read().splitlines()
 
@@ -42,10 +58,8 @@ def get_predictive_model(classifier):
 
 
     # load prepartitioned train/test sets
-    #test = pd.read_csv("data/test.csv") # directories for use in docker; change path accordingly
-    #train = pd.read_csv("data/train.csv")
-    test = pd.read_csv("../data/test.csv") # directories for use for local testing; change path accordingly
-    train = pd.read_csv("../data/train.csv")
+    test = pd.read_csv("data/test.csv")
+    train = pd.read_csv("data/train.csv")
 
     test['vec'] = [get_sentence_vector(x) for x in test.text]
     train['vec'] = [get_sentence_vector(x) for x in train.text]
@@ -93,7 +107,7 @@ def get_predictive_model(classifier):
             print('INVALID OPTION!')
 
         pred = clf.predict(X_test)
-        (pd.DataFrame({'predictions':pred})).to_csv("../data/%s_%s.csv" % (classifier,abbr))
+        (pd.DataFrame({'predictions':pred})).to_csv(output_dir + "%s_%s.csv" % (classifier,abbr))
         
         cm = confusion_matrix(y_test, pred, labels=list(set(df.expansion)))
         print()

@@ -147,6 +147,8 @@ def get_predictive_model():
                             batch_size=batch_size)
 
         y_pred = model.predict(X_test)
+
+        #(pd.DataFrame(y_pred)).to_csv("/data/data/cnn_%s.csv" % (abbr)) # use for persistent storage
         (pd.DataFrame(y_pred)).to_csv("../data/cnn_%s.csv" % (abbr))
 
         y_test_idx = y_test.argmax(axis=1)
