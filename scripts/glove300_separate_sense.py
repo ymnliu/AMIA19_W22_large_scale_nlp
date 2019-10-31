@@ -1,4 +1,4 @@
-opimport click
+import click
 from gensim.models import KeyedVectors
 from gensim.scripts.glove2word2vec import glove2word2vec
 from nltk import word_tokenize
@@ -127,7 +127,7 @@ def get_predictive_model(classifier):
 @click.option('-c', '--classifier', 'classifier', default='svm', help='Run predictive model for: SupportVectorMachine (svm); LogisticRegresssion (log);  MultilayerPerceptron (mlp); RandomForest (rf); Bagging (bag); Boosting (boost) ; ', type=click.STRING)
 
 def get_classifier(classifier):
-    """ convert UIMA annotations to JSON """
+    """ Run given classifier on GLoVe embedding model """
     if classifier is None:
         exit(1)
     print('Running ', classifier) 
