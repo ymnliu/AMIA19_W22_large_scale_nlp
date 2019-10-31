@@ -69,6 +69,8 @@ def get_predictive_model(classifier):
     # load full data set
     frames = [test, train]
     df = pd.concat(frames)
+    
+    
 
     # Loop through different abbreviations.
     for abbr in train.abbrev.unique():
@@ -92,12 +94,12 @@ def get_predictive_model(classifier):
         elif classifier == 'mlp':
             clf = MLPClassifier().fit(X_train, y_train)
         
-        elif classifier == 'bagging':
+        elif classifier == 'bag':
             clf = BaggingClassifier(tree.DecisionTreeClassifier(random_state=1)).fit(X_train,y_train)
         
-        elif classifier == 'boosting':
+        elif classifier == 'boost':
             num_trees = 70
-            clf = AdaBoostClassifier(n_estimators=num_trees, random_state=seed).fit(X_train, y_train)
+            clf = AdaBoostClassifier(n_estimators=num_trees, random_state=1032).fit(X_train, y_train)
         
         elif classifier == 'rf':
             clf = RandomForestClassifier().fit(X_train, y_train)
@@ -137,7 +139,7 @@ def get_predictive_model(classifier):
 
 
 @click.command()
-@click.option('-c', '--classifier', 'classifier', default='svm', help='Run predictive model for: SupportVectorMachine (svm); LogisticRegresssion (log);  MultilayerPerceptron (mlp); RandomForest (rf); Bagging (bag); Boosting (boost) ; ', type=click.STRING)
+@click.option('-c', '--classifier', 'classifier', default='svm', help='Run predictive model for: SupportVectorMachine (svm); LogisticRegresssion (log);  MultilayerPerceptron (mlp); RandomForest (rf); Bagging (bag); Boosting (boost)', type=click.STRING)
 
 def get_classifier(classifier):
     """ Run given classifier on GLoVe embedding model """
