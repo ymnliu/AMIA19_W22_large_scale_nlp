@@ -26,6 +26,7 @@ RUN pip install sklearn
 RUN pip install pandas
 RUN pip install nltk
 RUN pip install gensim
+RUN pip install click
 RUN pip install tensorflow==1.14.0
 RUN pip install keras==2.2.4
 
