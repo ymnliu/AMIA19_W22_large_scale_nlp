@@ -19,7 +19,6 @@ she
 her
 hers
 herself
-it
 its
 itself
 they
@@ -57,7 +56,6 @@ the
 and
 but
 if
-or
 because
 as
 until
