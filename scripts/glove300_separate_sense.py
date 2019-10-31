@@ -12,7 +12,6 @@ from sklearn.ensemble import BaggingClassifier, AdaBoostClassifier, RandomForest
 from sklearn.metrics import confusion_matrix, classification_report
 import os
 
-
 # Set environment variable in Docker to use correct directory
 # if None specified, then default to local machine
 try:  
@@ -22,7 +21,7 @@ except:
 
 def get_predictive_model(classifier):
     # get model and convert to w2v
-    if in_docker:
+    if in_docker == 'True':
         input_dir = '/data/models/'
         output_dir = '/data/data/'
     else:
