@@ -8,7 +8,7 @@ from sklearn import tree
 from sklearn.svm import SVC
 from sklearn.linear_model import LogisticRegression
 from sklearn.neural_network import MLPClassifier
-from sklearn.ensemble import BaggingClassifier, AdaBoostClassifier, RandomForestClassifier, Voting Classifier
+from sklearn.ensemble import BaggingClassifier, AdaBoostClassifier, RandomForestClassifier, VotingClassifier
 from sklearn.metrics import confusion_matrix, classification_report
 
 # Set environment variable in Docker to use correct directory
@@ -106,7 +106,7 @@ def get_predictive_model():
         # ensembled classifier
         ensemble = VotingClassifier(estimators).fit(X_train, y_train)
 
-        pred = clf.predict(X_test)
+        pred = ensemble.predict(X_test)
         (pd.DataFrame({'predictions':pred})).to_csv(output_dir + "ensemble_%s.csv" % (abbr))
         
         cm = confusion_matrix(y_test, pred, labels=list(set(df.expansion)))
@@ -138,3 +138,4 @@ def get_predictive_model():
 
 if __name__ == '__main__':
     print("Running ensemble")
+    get_predictive_model()
