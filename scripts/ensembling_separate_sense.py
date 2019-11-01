@@ -70,7 +70,7 @@ def get_predictive_model():
     df = pd.concat(frames)
     
     print("running voting for each acronym")
-    # Loop through different abbreviations.
+    # Loop through different abbreviations
     for abbr in train.abbrev.unique():
 
         train_abbr = train_grouped_abbr.get_group(abbr)
