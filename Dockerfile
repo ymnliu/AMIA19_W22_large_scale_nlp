@@ -2,7 +2,6 @@
 FROM continuumio/miniconda3 AS glove300
 
 COPY scripts /home/tutorial
-COPY data /home/tutorial/data
 
 RUN pip install numpy
 RUN pip install sklearn
@@ -38,7 +37,6 @@ WORKDIR /home/tutorial
 FROM continuumio/miniconda3 AS ensemble
 
 COPY scripts /home/tutorial
-COPY data /home/tutorial/data
 
 RUN pip install numpy
 RUN pip install sklearn
