@@ -20,7 +20,7 @@ except:
    in_docker = None 
 
 def get_predictive_model(classifier):
-    # get model and convert to w2v
+    # set directries based on run-time environment
     if in_docker == 'True':
         model_dir = '/data/models/'
         data_dir = '/data/data/'
@@ -28,6 +28,7 @@ def get_predictive_model(classifier):
         model_dir = 'models/'
         data_dir = 'data/'
 
+    # get model and convert to w2v
     glove_input_file = model_dir + 'w2v_glove_300.txt'
     
     word2vec_output_file = '/tmp/w2v.txt'
