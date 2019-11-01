@@ -28,7 +28,7 @@ def get_predictive_model(classifier):
         model_dir = 'models/'
         data_dir = 'data/'
 
-    glove_input_file = input_dir + 'w2v_glove_300.txt'
+    glove_input_file = model_dir + 'w2v_glove_300.txt'
     
     word2vec_output_file = '/tmp/w2v.txt'
     glove2word2vec(glove_input_file, word2vec_output_file)
@@ -36,7 +36,7 @@ def get_predictive_model(classifier):
 
     # get stop words
 
-    sw = "data/stopwords.txt"
+    sw = data_dir + "/stopwords.txt"
     with open(sw) as f:
         stop_words = f.read().splitlines()
 
@@ -57,8 +57,8 @@ def get_predictive_model(classifier):
 
 
     # load prepartitioned train/test sets
-    test = pd.read_csv("data/test.csv")
-    train = pd.read_csv("data/train.csv")
+    test = pd.read_csv(data_dir + "/test.csv")
+    train = pd.read_csv(data_dir + "data/train.csv")
 
     test['vec'] = [get_sentence_vector(x) for x in test.text]
     train['vec'] = [get_sentence_vector(x) for x in train.text]
@@ -108,7 +108,7 @@ def get_predictive_model(classifier):
             print('INVALID OPTION!')
 
         pred = clf.predict(X_test)
-        (pd.DataFrame({'predictions':pred})).to_csv(output_dir + "%s_%s.csv" % (classifier,abbr))
+        (pd.DataFrame({'predictions':pred})).to_csv(data_dir + "%s_%s.csv" % (classifier,abbr))
         
         cm = confusion_matrix(y_test, pred, labels=list(set(df.expansion)))
         print()
