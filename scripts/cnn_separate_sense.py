@@ -122,8 +122,6 @@ def get_predictive_model():
 
     # Loop through different abbreviations.
     for abbr in train.abbrev.unique():
-        if abbr == 'FISH':
-            continue
 
         train_abbr = train_grouped_abbr.get_group(abbr)
         test_abbr = test_grouped_abbr.get_group(abbr)

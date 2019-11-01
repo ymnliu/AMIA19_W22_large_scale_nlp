@@ -19,23 +19,22 @@ except:
    in_docker = None 
 
 def get_predictive_model():
-    # get model and convert to w2v
     if in_docker == 'True':
-        input_dir = '/data/models/'
-        output_dir = '/data/data/'
+        model_dir = '/data/models/'
+        data_dir = '/data/data/'
     else:
-        input_dir = 'models/'
-        output_dir = 'data/'
+        model_dir = 'models/'
+        data_dir = 'data/'
 
-    glove_input_file = input_dir + 'w2v_glove_300.txt'
-    
+    # get model and convert to w2v
+    glove_input_file = model_dir + 'w2v_glove_300.txt'
     word2vec_output_file = '/tmp/w2v.txt'
     glove2word2vec(glove_input_file, word2vec_output_file)
     model = KeyedVectors.load_word2vec_format(word2vec_output_file, binary=False)
 
     # get stop words
 
-    sw = "data/stopwords.txt"
+    sw = data_dir + "stopwords.txt"
     with open(sw) as f:
         stop_words = f.read().splitlines()
 
@@ -56,8 +55,8 @@ def get_predictive_model():
 
 
     # load prepartitioned train/test sets
-    test = pd.read_csv("data/test.csv")
-    train = pd.read_csv("data/train.csv")
+    test = pd.read_csv(data_dir + "test.csv")
+    train = pd.read_csv(data_dir + "train.csv")
 
     test['vec'] = [get_sentence_vector(x) for x in test.text]
     train['vec'] = [get_sentence_vector(x) for x in train.text]
@@ -107,7 +106,7 @@ def get_predictive_model():
         ensemble = VotingClassifier(estimators).fit(X_train, y_train)
 
         pred = ensemble.predict(X_test)
-        (pd.DataFrame({'predictions':pred})).to_csv(output_dir + "ensemble_%s.csv" % (abbr))
+        (pd.DataFrame({'predictions':pred})).to_csv(data_dir + "ensemble_%s.csv" % (abbr))
         
         cm = confusion_matrix(y_test, pred, labels=list(set(df.expansion)))
         print()
