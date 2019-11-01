@@ -1,5 +1,6 @@
 import os
 import click
+from pathlib import Path
 from gensim.models import KeyedVectors
 from gensim.scripts.glove2word2vec import glove2word2vec
 from nltk import word_tokenize
@@ -155,7 +156,9 @@ def get_predictive_model():
 
         y_pred = model.predict(X_test)
 
-        (pd.DataFrame(y_pred)).to_csv(data_dir + "cnn_%s.csv" % (abbr))
+        output_dir = Path(data_dir + "output")
+        output_dir.mkdir(parents=True, exist_ok=True)
+        (pd.DataFrame(y_pred)).to_csv(output_dir / "cnn_{}.csv".format(abbr))
 
         y_test_idx = y_test.argmax(axis=1)
         target_names = [encoder.classes_[idx] for idx in set(y_test_idx)]

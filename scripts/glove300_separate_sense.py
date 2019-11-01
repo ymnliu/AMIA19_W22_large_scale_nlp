@@ -1,5 +1,6 @@
 import os
 import click
+from pathlib import Path
 from gensim.models import KeyedVectors
 from gensim.scripts.glove2word2vec import glove2word2vec
 from nltk import word_tokenize
@@ -109,7 +110,9 @@ def get_predictive_model(classifier):
             print('INVALID OPTION!')
 
         pred = clf.predict(X_test)
-        (pd.DataFrame({'predictions':pred})).to_csv(data_dir + "%s_%s.csv" % (classifier,abbr))
+        output_dir = Path(data_dir + "output")
+        output_dir.mkdir(parents=True, exist_ok=True)
+        (pd.DataFrame({'predictions':pred})).to_csv(output_dir / "{}_{}.csv".format(classifier,abbr))
         
         cm = confusion_matrix(y_test, pred, labels=list(set(df.expansion)))
         print()

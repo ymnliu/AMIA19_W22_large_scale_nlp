@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 from gensim.models import KeyedVectors
 from gensim.scripts.glove2word2vec import glove2word2vec
 from nltk import word_tokenize
@@ -106,7 +107,9 @@ def get_predictive_model():
         ensemble = VotingClassifier(estimators).fit(X_train, y_train)
 
         pred = ensemble.predict(X_test)
-        (pd.DataFrame({'predictions':pred})).to_csv(data_dir + "ensemble_%s.csv" % (abbr))
+        output_dir = Path(data_dir + "output")
+        output_dir.mkdir(parents=True, exist_ok=True)
+        (pd.DataFrame({'predictions':pred})).to_csv(output_dir / "ensemble_{}.csv".format(abbr))
         
         cm = confusion_matrix(y_test, pred, labels=list(set(df.expansion)))
         print()
