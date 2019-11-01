@@ -22,11 +22,11 @@ except:
 def get_predictive_model(classifier):
     # get model and convert to w2v
     if in_docker == 'True':
-        input_dir = '/data/models/'
-        output_dir = '/data/data/'
+        model_dir = '/data/models/'
+        data_dir = '/data/data/'
     else:
-        input_dir = 'models/'
-        output_dir = 'data/'
+        model_dir = 'models/'
+        data_dir = 'data/'
 
     glove_input_file = input_dir + 'w2v_glove_300.txt'
     
