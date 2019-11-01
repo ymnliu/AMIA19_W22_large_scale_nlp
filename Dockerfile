@@ -34,7 +34,7 @@ RUN [ "python", "-c", "import nltk; nltk.download('punkt')" ]
 WORKDIR /home/tutorial
 
 # build image for ensembling  
-FROM continuumio/miniconda3 AS ensemble
+FROM continuumio/miniconda3 AS glove300ensemble
 
 COPY scripts /home/tutorial
 
