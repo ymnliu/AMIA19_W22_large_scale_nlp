@@ -1,4 +1,9 @@
 # build image for glove300 embeddings
+# to build a particular target, speficy:
+# DOCKER_BUILDKIT=1 docker build -t <imagename> --target <target> .
+
+
+
 FROM continuumio/miniconda3 AS glove300
 
 COPY scripts /home/tutorial
@@ -18,7 +23,6 @@ WORKDIR /home/tutorial
 FROM continuumio/miniconda3 AS cnn
 
 COPY scripts /home/tutorial
-COPY data /home/tutorial/data
 
 RUN pip install numpy
 RUN pip install sklearn
