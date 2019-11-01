@@ -72,7 +72,7 @@ def get_predictive_model(classifier):
     
     
 
-    # Loop through different abbreviations.
+    # Loop through different abbreviations
     for abbr in train.abbrev.unique():
 
         train_abbr = train_grouped_abbr.get_group(abbr)
