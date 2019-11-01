@@ -58,7 +58,7 @@ def get_predictive_model(classifier):
 
     # load prepartitioned train/test sets
     test = pd.read_csv(data_dir + "/test.csv")
-    train = pd.read_csv(data_dir + "data/train.csv")
+    train = pd.read_csv(data_dir + "/train.csv")
 
     test['vec'] = [get_sentence_vector(x) for x in test.text]
     train['vec'] = [get_sentence_vector(x) for x in train.text]
