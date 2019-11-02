@@ -23,7 +23,7 @@ acronyms = set([cl_acr.match(f.parts[-1]).group(2) for f in output_dir.glob("*.c
 # get a concatenated dataframe for each acronym
 dataframes = {a:pd.concat((pd.read_csv(f, usecols=['predictions']) for f in output_dir.glob("*_{}.csv".format(a))), ignore_index=True, axis=1) for a in acronyms}
 
-# get mode for each row and write out csv and classification details
+# get mode for each row, write out csv, and print classification details
 for abbr in dataframes:
     dataframes[abbr] = dataframes[abbr].apply(pd.Series.mode, axis=1)
     dataframes[abbr].to_csv(output_dir / "voted_{}.csv".format(abbr), columns=[0], header=['predictions'])
