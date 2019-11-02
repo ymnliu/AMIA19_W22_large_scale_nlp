@@ -24,10 +24,10 @@ acronyms = set([cl_acr.match(f.parts[-1]).group(2) for f in output_dir.glob("*.c
 dataframes = {a:pd.concat((pd.read_csv(f, usecols=['predictions']) for f in output_dir.glob("*_{}.csv".format(a))), ignore_index=True, axis=1) for a in acronyms}
 
 # get mode for each row and write out csv and classification details
-for df in dataframes:
-    dataframes[df] = dataframes[df].apply(pd.Series.mode, axis=1)
-    dataframes[df].to_csv(output_dir / "voted_{}.csv".format(df), columns=[0], header=['predictions'])
+for abbr in dataframes:
+    dataframes[abbr] = dataframes[abbr].apply(pd.Series.mode, axis=1)
+    dataframes[abbr].to_csv(output_dir / "voted_{}.csv".format(abbr), columns=[0], header=['predictions'])
     print("##" * 20)
-    print(" " * 20 + df)
+    print(" " * 20 + abbr)
     print("##" * 20 + "\n")
-    print(classification_report(test.get_group(df).expansion, dataframes[df][0]))
+    print(classification_report(test.get_group(abbr).expansion, dataframes[abbr][0]))
