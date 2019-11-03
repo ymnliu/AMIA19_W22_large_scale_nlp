@@ -158,7 +158,7 @@ def get_predictive_model():
                             batch_size=batch_size)
 
         y_pred = model.predict(X_test)
-        # get labels for preidictions
+        # get labels for predictions
         lookup = encoder.inverse_transform(y_pred)
 
         output_dir = Path(data_dir + "output")
