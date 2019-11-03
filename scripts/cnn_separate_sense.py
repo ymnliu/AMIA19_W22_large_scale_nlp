@@ -20,19 +20,6 @@ try:
 except:
    in_docker = None 
 
-class DefaultHelp(click.Command):
-    def __init__(self, *args, **kwargs):
-        context_settings = kwargs.setdefault('context_settings', {})
-        if 'help_option_names' not in context_settings:
-            context_settings['help_option_names'] = ['-h', '--help']
-        self.help_flag = context_settings['help_option_names'][0]
-        super(DefaultHelp, self).__init__(*args, **kwargs)
-
-    def parse_args(self, ctx, args):
-        if not args:
-            args = [self.help_flag]
-        return super(DefaultHelp, self).parse_args(ctx, args)
-
 def get_predictive_model():
 
     encoder = LabelBinarizer()
@@ -78,6 +65,18 @@ def get_predictive_model():
                 idx_seq.append(idx)
 
         return idx_seq
+    
+    def get_input_word(sentence):
+        word_list = word_tokenize(sentence)
+        word_list = [word.lower() for word in word_list if word.lower() not in stop_words]
+        idx_seq = []
+
+        for word in word_list:
+            if wv_model.vocab.get(word):
+                idx = wv_model.vocab.get(word).index
+                idx_seq.append(idx)
+
+        return word_list
 
     # load prepartitioned train/test sets
     test = pd.read_csv(data_dir + "test.csv") # directories for use for local testing; change path accordingly
@@ -122,20 +121,24 @@ def get_predictive_model():
     print_model_summary = True
 
     # Loop through different abbreviations.
-    for abbr in train.abbrev.unique():
+   for abbr in train.abbrev.unique():
+    #for abbr in ['MS']:
+        if abbr == 'FISH':
+            continue
 
         train_abbr = train_grouped_abbr.get_group(abbr)
         test_abbr = test_grouped_abbr.get_group(abbr)
-
+        
         train_transfomed_label = encoder.fit_transform(train_abbr.expansion)
         test_transfomed_label = encoder.transform(test_abbr.expansion)
 
         X_train = sequence.pad_sequences(train_abbr.seq, maxlen=maxlen)
+
         y_train = train_transfomed_label
 
         X_test = sequence.pad_sequences(test_abbr.seq, maxlen=maxlen)
         y_test = test_transfomed_label
-
+        
         print()
         print("##" * 20)
         print(" " * 20 + abbr)
@@ -155,15 +158,18 @@ def get_predictive_model():
                             batch_size=batch_size)
 
         y_pred = model.predict(X_test)
+        # get labels for preidictions
+        lookup = encoder.inverse_transform(y_pred)
 
         output_dir = Path(data_dir + "output")
         output_dir.mkdir(parents=True, exist_ok=True)
-        (pd.DataFrame(y_pred)).to_csv(output_dir / "cnn_{}.csv".format(abbr))
+        (pd.DataFrame({'predictions':lookup})).to_csv(output_dir / "cnn_{}.csv".format(abbr))
 
         y_test_idx = y_test.argmax(axis=1)
         target_names = [encoder.classes_[idx] for idx in set(y_test_idx)]
 
         print(classification_report(y_test_idx, y_pred.argmax(axis=1), target_names=target_names))
+        
 
 @click.command()
 @click.option('-c', '--classifier', 'classifier', default='keras', help='Run predictive model for cnn/Keras classifier', type=click.STRING)
