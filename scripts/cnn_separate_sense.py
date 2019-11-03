@@ -11,7 +11,7 @@ from keras.layers import Dense, Embedding, Dropout, Conv1D, GlobalMaxPooling1D, 
 from keras.preprocessing import sequence
 from keras.callbacks import EarlyStopping
 from keras.preprocessing.text import Tokenizer
-from sklearn.preprocessing import LabelBinarizer
+from sklearn.preprocessing import LabelBinarizer, LabelEncoder
 
 # Set environment variable in Docker to use correct directory
 # if None specified, then default to local machine
@@ -121,11 +121,12 @@ def get_predictive_model():
     print_model_summary = True
 
     # Loop through different abbreviations.
-   for abbr in train.abbrev.unique():
+    for abbr in train.abbrev.unique():
     #for abbr in ['MS']:
         if abbr == 'FISH':
             continue
 
+        
         train_abbr = train_grouped_abbr.get_group(abbr)
         test_abbr = test_grouped_abbr.get_group(abbr)
         
@@ -168,7 +169,12 @@ def get_predictive_model():
         y_test_idx = y_test.argmax(axis=1)
         target_names = [encoder.classes_[idx] for idx in set(y_test_idx)]
 
-        print(classification_report(y_test_idx, y_pred.argmax(axis=1), target_names=target_names))
+        # match labels -> target names
+        le = LabelEncoder()
+        le.fit(target_names)
+
+        print(classification_report(y_test_idx, y_pred.argmax(axis=1), target_names = le.classes_))
+
         
 
 @click.command()
