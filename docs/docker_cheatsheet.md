@@ -6,7 +6,7 @@
 notice the dot at the end (this specifies the directory in which Dockerfile is contained. 
 Also, of note: target tells with block of code to use in the multi-stage build Dockerfile. 
 ```
-docker build --target glove300 -t namespace/glove300:n .
+DOCKER_BUILDKIT=1 docker build -t <image name> --target <target name> .
 ```
 
 ## Run image:
