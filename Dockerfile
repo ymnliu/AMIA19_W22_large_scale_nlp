@@ -37,8 +37,8 @@ RUN [ "python", "-c", "import nltk; nltk.download('punkt')" ]
 
 WORKDIR /home/tutorial
 
-# build image for ensembling  
-FROM continuumio/miniconda3 AS glove300ensemble
+# build image for glove ensembling  
+FROM continuumio/miniconda3 AS glove300-ensemble
 
 COPY scripts /home/tutorial
 
@@ -49,5 +49,15 @@ RUN pip install nltk
 RUN pip install gensim
 
 RUN [ "python", "-c", "import nltk; nltk.download('punkt')" ]
+
+WORKDIR /home/tutorial
+
+# build image for vote  
+FROM continuumio/miniconda3 AS vote
+
+COPY scripts /home/tutorial
+
+RUN pip install sklearn
+RUN pip install pandas
 
 WORKDIR /home/tutorial
