@@ -1,13 +1,13 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Workflow                  #new type of k8s spec
 metadata:
-  generateName: nlp-adapt-wf-    #name of workflow spec
+  generateName: nlp-evaluate-wf-    #name of workflow spec
 spec:
   entrypoint: nlp-eval          #invoke the build template
   volumes:
   - name: test-volume
     hostPath:
-      path: /data/data/output 
+      path: /home/opensuse/AMIA19_W22_large_scale_nlp 
   
   templates:
 
@@ -23,7 +23,7 @@ spec:
         template: run-mlp
 
     - - name: bag 
-        template: run-bagg
+        template: run-bag
     
     - - name: boost 
         template: run-boost
@@ -34,6 +34,9 @@ spec:
     - - name: ensemble 
         template: run-ensemble
 
+    - - name: cnn 
+        template: run-cnn
+    
     - - name: vote 
         template: run-vote
   
@@ -45,7 +48,7 @@ spec:
         - name: DOCKER         
           value: "True"
       command: [sh, -c]
-      args: ["python scripts/glove300_separate_sense.py"] 
+      args: ["python ./glove300_separate_sense.py"] 
       volumeMounts:
       - name: test-volume
         mountPath: /data
@@ -59,7 +62,7 @@ spec:
         - name: DOCKER         
           value: "True"
       command: [sh, -c]
-      args: ["python scripts/glove300_separate_sense.py -c log"] 
+      args: ["python ./glove300_separate_sense.py -c log"] 
       volumeMounts:
       - name: test-volume
         mountPath: /data
@@ -73,7 +76,7 @@ spec:
         - name: DOCKER         
           value: "True"
       command: [sh, -c]
-      args: ["python scripts/glove300_separate_sense.py -c mlp"] 
+      args: ["python ./glove300_separate_sense.py -c mlp"] 
       volumeMounts:
       - name: test-volume
         mountPath: /data
@@ -87,7 +90,7 @@ spec:
         - name: DOCKER         
           value: "True"
       command: [sh, -c]
-      args: ["python scripts/glove300_separate_sense.py -c rf"] 
+      args: ["python ./glove300_separate_sense.py -c rf"] 
       volumeMounts:
       - name: test-volume
         mountPath: /data
@@ -101,7 +104,7 @@ spec:
         - name: DOCKER         
           value: "True"
       command: [sh, -c]
-      args: ["python scripts/glove300_separate_sense.py -c bag"] 
+      args: ["python ./glove300_separate_sense.py -c bag"] 
       volumeMounts:
       - name: test-volume
         mountPath: /data
@@ -115,7 +118,7 @@ spec:
         - name: DOCKER         
           value: "True"
       command: [sh, -c]
-      args: ["python scripts/glove300_separate_sense.py -c boost"] 
+      args: ["python ./glove300_separate_sense.py -c boost"] 
       volumeMounts:
       - name: test-volume
         mountPath: /data
@@ -123,13 +126,13 @@ spec:
 
   - name: run-ensemble
     container:
-      image: nlpieumn/glove300ensemble
+      image: nlpieumn/glove300-ensemble
       imagePullPolicy: Never
       env:
         - name: DOCKER         
           value: "True"
       command: [sh, -c]
-      args: ["python scripts/glove300ensembling_separate_sense.py"] 
+      args: ["python ./glove300ensembling_separate_sense.py"] 
       volumeMounts:
       - name: test-volume
         mountPath: /data
@@ -143,7 +146,7 @@ spec:
         - name: DOCKER         
           value: "True"
       command: [sh, -c]
-      args: ["python scripts/cnn_separate_sense.py"] 
+      args: ["python ./cnn_separate_sense.py"] 
       volumeMounts:
       - name: test-volume
         mountPath: /data
@@ -157,7 +160,7 @@ spec:
         - name: DOCKER         
           value: "True"
       command: [sh, -c]
-      args: ["python scripts/vote.py"] 
+      args: ["python ./vote.py"] 
       volumeMounts:
       - name: test-volume
         mountPath: /data
