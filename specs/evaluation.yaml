@@ -7,7 +7,7 @@ spec:
   volumes:
   - name: test-volume
     hostPath:
-      path: /home/opensuse/AMIA19_W22_large_scale_nlp 
+      path: /home/opensuse/tutorial
   
   templates:
 
