@@ -126,13 +126,13 @@ spec:
 
   - name: run-ensemble
     container:
-      image: nlpieumn/ensemble
+      image: nlpieumn/glove300
       imagePullPolicy: Never
       env:
         - name: DOCKER         
           value: "True"
       command: [sh, -c]
-      args: ["python ./glove300.py"] 
+      args: ["python ./ensemble.py"] 
       volumeMounts:
       - name: test-volume
         mountPath: /data
