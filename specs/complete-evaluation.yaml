@@ -48,7 +48,7 @@ spec:
         - name: DOCKER         
           value: "True"
       command: [sh, -c]
-      args: ["python ./glove300_separate_sense.py"] 
+      args: ["python ./glove300.py"] 
       volumeMounts:
       - name: test-volume
         mountPath: /data
@@ -62,7 +62,7 @@ spec:
         - name: DOCKER         
           value: "True"
       command: [sh, -c]
-      args: ["python ./glove300_separate_sense.py -c log"] 
+      args: ["python ./glove300.py -c log"] 
       volumeMounts:
       - name: test-volume
         mountPath: /data
@@ -76,7 +76,7 @@ spec:
         - name: DOCKER         
           value: "True"
       command: [sh, -c]
-      args: ["python ./glove300_separate_sense.py -c mlp"] 
+      args: ["python ./glove300.py -c mlp"] 
       volumeMounts:
       - name: test-volume
         mountPath: /data
@@ -90,7 +90,7 @@ spec:
         - name: DOCKER         
           value: "True"
       command: [sh, -c]
-      args: ["python ./glove300_separate_sense.py -c rf"] 
+      args: ["python ./glove300.py -c rf"] 
       volumeMounts:
       - name: test-volume
         mountPath: /data
@@ -104,7 +104,7 @@ spec:
         - name: DOCKER         
           value: "True"
       command: [sh, -c]
-      args: ["python ./glove300_separate_sense.py -c bag"] 
+      args: ["python ./glove300.py -c bag"] 
       volumeMounts:
       - name: test-volume
         mountPath: /data
@@ -118,7 +118,7 @@ spec:
         - name: DOCKER         
           value: "True"
       command: [sh, -c]
-      args: ["python ./glove300_separate_sense.py -c boost"] 
+      args: ["python ./glove300.py -c boost"] 
       volumeMounts:
       - name: test-volume
         mountPath: /data
@@ -132,7 +132,7 @@ spec:
         - name: DOCKER         
           value: "True"
       command: [sh, -c]
-      args: ["python ./glove300ensembling_separate_sense.py"] 
+      args: ["python ./glove300.py"] 
       volumeMounts:
       - name: test-volume
         mountPath: /data
@@ -146,7 +146,7 @@ spec:
         - name: DOCKER         
           value: "True"
       command: [sh, -c]
-      args: ["python ./cnn_separate_sense.py"] 
+      args: ["python ./cnn.py"] 
       volumeMounts:
       - name: test-volume
         mountPath: /data
