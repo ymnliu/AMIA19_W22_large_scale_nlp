@@ -27,6 +27,12 @@ spec:
     
     - - name: boost 
         template: run-boost
+    
+    - - name: rf 
+        template: run-rf
+    
+    - - name: ensemble 
+        template: run-ensemble
 
     - - name: cnn 
         template: run-cnn
@@ -76,6 +82,20 @@ spec:
         mountPath: /data
         readOnly: false
 
+  - name: run-rf
+    container:
+      image: nlpieumn/glove300
+      imagePullPolicy: Never
+      env:
+        - name: DOCKER         
+          value: "True"
+      command: [sh, -c]
+      args: ["python ./glove300_separate_sense.py -c rf"] 
+      volumeMounts:
+      - name: test-volume
+        mountPath: /data
+        readOnly: false
+
   - name: run-bag
     container:
       image: nlpieumn/glove300
@@ -99,6 +119,20 @@ spec:
           value: "True"
       command: [sh, -c]
       args: ["python ./glove300_separate_sense.py -c boost"] 
+      volumeMounts:
+      - name: test-volume
+        mountPath: /data
+        readOnly: false
+
+  - name: run-ensemble
+    container:
+      image: nlpieumn/glove300-ensemble
+      imagePullPolicy: Never
+      env:
+        - name: DOCKER         
+          value: "True"
+      command: [sh, -c]
+      args: ["python ./glove300ensembling_separate_sense.py"] 
       volumeMounts:
       - name: test-volume
         mountPath: /data
