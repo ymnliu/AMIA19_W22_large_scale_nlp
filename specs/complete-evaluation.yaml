@@ -7,7 +7,7 @@ spec:
   volumes:
   - name: test-volume
     hostPath:
-      path: /home/opensuse/AMIA19_W22_large_scale_nlp 
+      path: /Users/gms/development/nlp/nlpie/projects/acronym/AMIA19_W22_large_scale_nlp # /home/opensuse/AMIA19_W22_large_scale_nlp 
   
   templates:
 
@@ -126,7 +126,7 @@ spec:
 
   - name: run-ensemble
     container:
-      image: nlpieumn/glove300-ensemble
+      image: nlpieumn/ensemble
       imagePullPolicy: Never
       env:
         - name: DOCKER         
