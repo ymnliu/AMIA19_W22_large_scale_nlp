@@ -27,15 +27,24 @@ docker run -it -v /home/amia/tutorial/:/data nlpieumn/glove300 /bin/bash -c "pyt
 ```
 docker run -it -v /home/amia/tutorial/:/data nlpieumn/glove300 /bin/bash -c "python /home/tutorial/glove300.py -c mlp"
 ```
+### example to run cnn/keras classifier
+
+```
+docker run -it -v /home/amia/tutorial/:/data nlpieumn/glove300 /bin/bash -c "PYTHONHASHSEED=0 python /home/tutorial/cnn.py"
+```
+
 ### example to run help
+
 ```
 docker run -it -v /home/amia/tutorial/:/data nlpieumn/glove300 /bin/bash -c "python /home/tutorial/glove300.py --help"
 ```
 
 ### run docker container using mlp as background daemon process
+
 ```
 docker run -d -it -v /home/amia/tutorial/:/data nlpieumn/glove300 /bin/bash -c "python /home/tutorial/glove300.py -c mlp"
 ```
+
 ### stop daemon process container 
 (NB: use container id returned from previous step, or get from running “docker ps”)
 ```
@@ -51,7 +60,7 @@ docker push nlpieumn/glove300
 
 ### pull from repo
 ```
-docker pull nlpieumn/glove300:
+docker pull nlpieumn/glove300
 ```
 
 ### list all docker images on compute node
