@@ -1,7 +1,6 @@
 # DOCKER CHEAT SHEET 
 
 
-
 ## Build image in multi-stage Dockerfile:
 notice the dot at the end (this specifies the directory in which Dockerfile is contained. 
 Also, of note: target tells with block of code to use in the multi-stage build Dockerfile. 
@@ -14,28 +13,28 @@ DOCKER_BUILDKIT=1 docker build -t <image name> --target <target name> .
 ### ssh into docker container
 
 ```
-docker run -it -v /path to project/AMIA19_W22_large_scale_nlp/:/data nlpieumn/glove300:2 /bin/bash
+docker run -it -v /home/amia/tutorial/:/data nlpieumn/glove300:2 /bin/bash
 ```
 
 ### example to run default - svm - classifier
 
 ```
-docker run -it -v /path to project/AMIA19_W22_large_scale_nlp/:/data nlpieumn/glove300:2 /bin/bash -c "python /home/tutorial/glove300_separate_sense.py"
+docker run -it -v /home/amia/tutorial/:/data nlpieumn/glove300 /bin/bash -c "python /home/tutorial/glove300.py"
 ```
 
 ### example to run mlp classifier
 
 ```
-docker run -it -v /path to project/AMIA19_W22_large_scale_nlp/:/data nlpieumn/glove300:2 /bin/bash -c "python /home/tutorial/glove300_separate_sense.py -c mlp"
+docker run -it -v /home/amia/tutorial/:/data nlpieumn/glove300 /bin/bash -c "python /home/tutorial/glove300.py -c mlp"
 ```
 ### example to run help
 ```
-docker run -it -v /path to project/AMIA19_W22_large_scale_nlp/:/data nlpieumn/glove300:2 /bin/bash -c "python /home/tutorial/glove300_separate_sense.py --help"
+docker run -it -v /home/amia/tutorial/:/data nlpieumn/glove300 /bin/bash -c "python /home/tutorial/glove300.py --help"
 ```
 
 ### run docker container using mlp as background daemon process
 ```
-docker run -d  -it -v /path to project/AMIA19_W22_large_scale_nlp/:/data nlpieumn/glove300:2 /bin/bash -c "python /home/tutorial/glove300_separate_sense.py -c mlp"
+docker run -d -it -v /home/amia/tutorial/:/data nlpieumn/glove300 /bin/bash -c "python /home/tutorial/glove300.py -c mlp"
 ```
 ### stop daemon process container 
 (NB: use container id returned from previous step, or get from running “docker ps”)
@@ -47,12 +46,12 @@ docker stop <conatiner id>
 (NB: need to have adequate privs to do this!), specify version number `n`
 
 ```
-docker push nlpieumn/glove300:n
+docker push nlpieumn/glove300
 ```
 
 ### pull from repo
 ```
-docker pull nlpieumn/glove300:n
+docker pull nlpieumn/glove300:
 ```
 
 ### list all docker images on compute node
