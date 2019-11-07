@@ -16,19 +16,19 @@ spec:
     - - name: svm
         template: run-svm
 
-    - - name: log
+      - name: log
         template: run-log
 
-    - - name: mlp 
+      - name: mlp 
         template: run-mlp
 
-    - - name: bag 
+      - name: bag 
         template: run-bag
     
-    - - name: boost 
+      - name: boost 
         template: run-boost
     
-    - - name: rf 
+      - name: rf 
         template: run-rf
     
     - - name: ensemble 
