@@ -42,13 +42,13 @@ spec:
   
   - name: run-svm
     container:
-      image: nlpieumn/glove300
+      image: nlpieumn/ml
       imagePullPolicy: Never
       env:
         - name: DOCKER         
           value: "True"
       command: [sh, -c]
-      args: ["python ./glove300.py"] 
+      args: ["python ./ml.py"] 
       volumeMounts:
       - name: test-volume
         mountPath: /data
@@ -56,13 +56,13 @@ spec:
 
   - name: run-log
     container:
-      image: nlpieumn/glove300
+      image: nlpieumn/ml
       imagePullPolicy: Never
       env:
         - name: DOCKER         
           value: "True"
       command: [sh, -c]
-      args: ["python ./glove300.py -c log"] 
+      args: ["python ./ml.py -c log"] 
       volumeMounts:
       - name: test-volume
         mountPath: /data
@@ -70,13 +70,13 @@ spec:
 
   - name: run-mlp
     container:
-      image: nlpieumn/glove300
+      image: nlpieumn/ml
       imagePullPolicy: Never
       env:
         - name: DOCKER         
           value: "True"
       command: [sh, -c]
-      args: ["python ./glove300.py -c mlp"] 
+      args: ["python ./ml.py -c mlp"] 
       volumeMounts:
       - name: test-volume
         mountPath: /data
@@ -84,13 +84,13 @@ spec:
 
   - name: run-rf
     container:
-      image: nlpieumn/glove300
+      image: nlpieumn/ml
       imagePullPolicy: Never
       env:
         - name: DOCKER         
           value: "True"
       command: [sh, -c]
-      args: ["python ./glove300.py -c rf"] 
+      args: ["python ./ml.py -c rf"] 
       volumeMounts:
       - name: test-volume
         mountPath: /data
@@ -98,13 +98,13 @@ spec:
 
   - name: run-bag
     container:
-      image: nlpieumn/glove300
+      image: nlpieumn/ml
       imagePullPolicy: Never
       env:
         - name: DOCKER         
           value: "True"
       command: [sh, -c]
-      args: ["python ./glove300.py -c bag"] 
+      args: ["python ./ml.py -c bag"] 
       volumeMounts:
       - name: test-volume
         mountPath: /data
@@ -112,13 +112,13 @@ spec:
   
   - name: run-boost
     container:
-      image: nlpieumn/glove300
+      image: nlpieumn/ml
       imagePullPolicy: Never
       env:
         - name: DOCKER         
           value: "True"
       command: [sh, -c]
-      args: ["python ./glove300.py -c boost"] 
+      args: ["python ./ml.py -c boost"] 
       volumeMounts:
       - name: test-volume
         mountPath: /data
@@ -126,7 +126,7 @@ spec:
 
   - name: run-ensemble
     container:
-      image: nlpieumn/glove300
+      image: nlpieumn/ml
       imagePullPolicy: Never
       env:
         - name: DOCKER         

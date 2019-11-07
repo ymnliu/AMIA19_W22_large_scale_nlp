@@ -4,7 +4,7 @@
 
 
 
-FROM continuumio/miniconda3 AS glove300
+FROM continuumio/miniconda3 AS ml
 
 COPY scripts /home/tutorial
 
