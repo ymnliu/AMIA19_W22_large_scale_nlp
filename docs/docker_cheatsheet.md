@@ -1,4 +1,4 @@
-# DOCKER CHEATSHEET 
+# DOCKER CHEAT SHEET 
 
 ## Help (one page at a time)
 
