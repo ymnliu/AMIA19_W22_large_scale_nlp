@@ -1,6 +1,12 @@
 # DOCKER CHEATSHEET 
 
+## Help (one page at a time)
 
+```
+docker --help | more
+```
+
+NB: Also see [Docker Cheat Sheet](https://www.docker.com/sites/default/files/d8/2019-09/docker-cheat-sheet.pdf) 
 
 ## Build image in multi-stage Dockerfile:
 Notice the dot at the end (this specifies the directory in which Dockerfile is contained. 
@@ -15,13 +21,6 @@ DOCKER_BUILDKIT=1 docker build -t <image name> --target <target name> .
 docker images
 ```
 
-## Help (one page at a time)
-
-```
-docker --help | more
-```
-
-NB: Also see [Docker Cheat Sheet](https://www.docker.com/sites/default/files/d8/2019-09/docker-cheat-sheet.pdf) 
 
 ## Pull image from Docker Hub
 
