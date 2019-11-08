@@ -1,80 +1,131 @@
-# DOCKER CHEAT SHEET 
+# DOCKER CHEATSHEET 
+
 
 
 ## Build image in multi-stage Dockerfile:
-notice the dot at the end (this specifies the directory in which Dockerfile is contained. 
+Notice the dot at the end (this specifies the directory in which Dockerfile is contained. 
 Also, of note: target tells with block of code to use in the multi-stage build Dockerfile. 
 ```
 DOCKER_BUILDKIT=1 docker build -t <image name> --target <target name> .
 ```
 
+## list all docker images on compute node
+
+```
+docker images
+```
+
+## Docker help (one page at a time)
+
+```
+docker --help | more
+```
+
+NB: Also see https://www.docker.com/sites/default/files/d8/2019-09/docker-cheat-sheet.pdf
+
+## Docker pull image from Docker Hub
+
+```
+docker pull docker/whalesay
+```
+
+## docker pull image from other repository
+
+```
+docker pull nlpieumn/ml
+```
+
 ## Run image:
+
+### Hello World
+
+```
+docker run docker/whalesay cowsay boo
+```
 
 ### ssh into docker container
 
 ```
-docker run -it -v /home/amia/tutorial/:/data nlpieumn/glove300:2 /bin/bash
+docker run -it -v /home/amia/tutorial/:/data nlpieumn/ml /bin/bash
 ```
 
-### example to run default - svm - classifier
+#### Explore container
 
 ```
-docker run -it -v /home/amia/tutorial/:/data nlpieumn/glove300 /bin/bash -c "python /home/tutorial/glove300.py"
+pwd
+ls -la
+ls -la /data
+cat /etc/os-release
+ls /bin
+exit
 ```
 
-### example to run mlp classifier
 
+### Docker pull from repo
 ```
-docker run -it -v /home/amia/tutorial/:/data nlpieumn/glove300 /bin/bash -c "python /home/tutorial/glove300.py -c mlp"
-```
-### example to run cnn/keras classifier
-
-```
-docker run -it -v /home/amia/tutorial/:/data nlpieumn/glove300 /bin/bash -c "PYTHONHASHSEED=0 python /home/tutorial/cnn.py"
+docker pull nlpieumn/ml
 ```
 
-### example to run help
+### Example to run help to see available ml classifiers
 
 ```
-docker run -it -v /home/amia/tutorial/:/data nlpieumn/glove300 /bin/bash -c "python /home/tutorial/glove300.py --help"
+docker run -it -v /home/amia/tutorial/:/data nlpieumn/ml /bin/bash -c "python /home/tutorial/ml.py --help"
 ```
 
-### run docker container using mlp as background daemon process
+### Example to run default - svm - classifier
 
 ```
-docker run -d -it -v /home/amia/tutorial/:/data nlpieumn/glove300 /bin/bash -c "python /home/tutorial/glove300.py -c mlp"
+docker run -it -v /home/amia/tutorial/:/data nlpieumn/ml /bin/bash -c "python /home/tutorial/ml.py"
 ```
 
-### stop daemon process container 
+### Example to run mlp classifier
+
+```
+docker run -it -v /home/amia/tutorial/:/data nlpieumn/ml /bin/bash -c "python /home/tutorial/glove300.py -c mlp"
+```
+
+### Example to run voting ML ensemble classifier
+
+```
+docker run -it -v /home/amia/tutorial/:/data nlpieumn/ml /bin/bash -c "python /home/tutorial/ensemble.py"
+```
+
+### Example to run cnn/keras classifier
+
+```
+docker run -it -v /home/amia/tutorial/:/data nlpieumn/cnn /bin/bash -c "PYTHONHASHSEED=0 python /home/tutorial/cnn.py"
+```
+
+### Run docker container using mlp as background daemon process
+
+```
+docker run -d -it -v /home/amia/tutorial/:/data nlpieumn/ml /bin/bash -c "python /home/tutorial/glove300.py -c mlp"
+```
+
+### Stop daemon process container 
 (NB: use container id returned from previous step, or get from running “docker ps”)
 ```
 docker stop <conatiner id>
 ```
 
-### push to nlpieumn org repo 
+### Push to nlpieumn org repo 
 (NB: need to have adequate privs to do this!), specify version number `n`
 
 ```
 docker push nlpieumn/glove300
 ```
 
-### pull from repo
-```
-docker pull nlpieumn/glove300
-```
-
-### list all docker images on compute node
-
-```
-docker images
-```
-
-### remove docker image
+### Remove docker image
 ```
 docker rmi <image id> # get <image id> from running “docker images”
 ```
 
-### monitor docker resource utilization
+### Monitor docker processes/resource utilization
+
+```
+docker ps
+```
+
 ```
 docker stats
 ```
