@@ -45,5 +45,5 @@ argo get xxx-workflow-name-xxx #use the workflow id returned from the 'submit' c
 
 ```
 argo logs xxx-pod-name-xxx #from 'get' command above
-kubectl logs xxx-pod-name-xxx -c main
+kubectl logs xxx-pod-name-xxx -c main # query main container of pod for log
 ```
