@@ -31,7 +31,7 @@ which is equivalent to
 ls -la ~/
 ```
 
-### List file in `/bin`
+### List file in `/bin`directory
 
 ```
 ls -la /bin
