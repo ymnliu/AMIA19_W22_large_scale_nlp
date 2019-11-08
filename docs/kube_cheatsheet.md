@@ -49,6 +49,14 @@ kubectl get ep --namespace=kube-system # display kube-system namespace
 kubectl create -f /home/opensuse/tutorial/specs/dnstools.yaml
 ```
 
+## View pod details and logs
+
+```
+kubectl get pods dnstools
+kubectl describe pods dnstools
+kubectl logs dnstools
+```
+
 ## Dig for local cluster resources and get time to response for service/ep in default namespace by servicename.default
 
 ```
