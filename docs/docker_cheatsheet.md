@@ -13,6 +13,10 @@ Notice the dot at the end (this specifies the directory in which Dockerfile is c
 Also, of note: target tells with block of code to use in the multi-stage build Dockerfile. 
 ```
 DOCKER_BUILDKIT=1 docker build -t <image name> --target <target name> .
+
+# valid target names; ml, cnn and vote
+# image names: repository/name, e.g., nlpieumn/ml
+
 ```
 
 ## List all docker images on compute node
