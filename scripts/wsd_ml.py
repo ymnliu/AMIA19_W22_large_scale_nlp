@@ -36,7 +36,7 @@ np.random.seed(42)
 # 4. Set the `tensorflow` pseudo-random generator at a fixed value
 import tensorflow as tf
 tf.set_random_seed(42)
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'    # skip warnings
+tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.ERROR)
 
 
 # set parameters:
@@ -77,6 +77,21 @@ def get_input_seq(wv_model, sentence):
            idx_seq.append(idx)
 
    return idx_seq
+
+
+def get_sentence_vector(wv_model, sentence):
+    word_list = word_tokenize(sentence)
+    word_list = [word.lower() for word in word_list if word.lower() not in stop_words]
+    word_vectors = []
+
+    for x in word_list:
+        try:
+            w_vec = wv_model.get_vector(x)
+            word_vectors.append(w_vec)
+        except KeyError:
+            pass
+
+    return sum(word_vectors) / len(word_vectors)
 
 
 # Function to create model, required for KerasClassifier
@@ -123,9 +138,7 @@ def define_ml_models():
 def run_predictive_model(model_name):
 
     encoder = LabelBinarizer()
-
     models = define_ml_models()
-
 
     # load prepartitioned train/test sets
     train = pd.read_csv(data_dir + "train.csv")
@@ -140,6 +153,9 @@ def run_predictive_model(model_name):
 
     train['seq'] = [get_input_seq(wv_model, sent) for sent in train.text]
     test['seq'] = [get_input_seq(wv_model, sent) for sent in test.text]
+
+    test['vec'] = [get_sentence_vector(wv_model, x) for x in test.text]
+    train['vec'] = [get_sentence_vector(wv_model, x) for x in train.text]
 
     train_grouped_abbr = train.groupby('abbrev')
     test_grouped_abbr = test.groupby('abbrev')
@@ -162,15 +178,29 @@ def run_predictive_model(model_name):
 
         X_test = sequence.pad_sequences(test_abbr.seq, maxlen=maxlen)
         y_test = test_transfomed_label
-        
+
         print()
         print("##" * 20)
         print(" " * 20 + abbr)
         print("##" * 20)
 
+        output_dir = Path(data_dir + "output")
+        output_dir.mkdir(parents=True, exist_ok=True)
+
         if model_name != 'cnn':
+            X_train = np.array(list(train_abbr.vec))
+            y_train = train_abbr.expansion
+
+            X_test = np.array(list(test_abbr.vec))
+            y_test = test_abbr.expansion
+
             model = models[model_name]
             model.fit(X_train, y_train)
+
+            y_pred = model.predict(X_test)
+            (pd.DataFrame({'predictions': y_pred})).to_csv(output_dir / "{}_{}.csv".format(model_name, abbr))
+            print(classification_report(y_test, y_pred))
+
         else:
             model = create_cnn_model(len(encoder.classes_), max(X_train.max(), X_test.max()) + 1)
 
@@ -186,22 +216,19 @@ def run_predictive_model(model_name):
                                 validation_data=(X_test, y_test),
                                 batch_size=batch_size)
 
-        y_pred = model.predict(X_test)
-        # get labels for predictions
-        lookup = encoder.inverse_transform(y_pred)
+            y_pred = model.predict(X_test)
+            # get labels for predictions
+            lookup = encoder.inverse_transform(y_pred)
 
-        output_dir = Path(data_dir + "output")
-        output_dir.mkdir(parents=True, exist_ok=True)
-        (pd.DataFrame({'predictions': lookup})).to_csv(output_dir / "{}_{}.csv".format(model_name, abbr))
+            (pd.DataFrame({'predictions': lookup})).to_csv(output_dir / "{}_{}.csv".format(model_name, abbr))
+            y_test_idx = y_test.argmax(axis=1)
+            target_names = [encoder.classes_[idx] for idx in set(y_test_idx)]
 
-        y_test_idx = y_test.argmax(axis=1)
-        target_names = [encoder.classes_[idx] for idx in set(y_test_idx)]
+            # match labels -> target names
+            le = LabelEncoder()
+            le.fit(target_names)
 
-        # match labels -> target names
-        le = LabelEncoder()
-        le.fit(target_names)
-
-        print(classification_report(y_test_idx, y_pred.argmax(axis=1), target_names=le.classes_))
+            print(classification_report(y_test_idx, y_pred.argmax(axis=1), target_names=le.classes_))
 
 
 @click.command()
