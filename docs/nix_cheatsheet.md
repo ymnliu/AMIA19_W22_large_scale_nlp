@@ -1,4 +1,4 @@
-# 'NIX COMMAND LINE CHEATSHEET
+# 'NIX COMMAND LINE CHEAT SHEET
 
 ## Connect to host as user `opensuse`
 
