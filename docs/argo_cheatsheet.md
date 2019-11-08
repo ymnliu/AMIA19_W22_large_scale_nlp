@@ -11,7 +11,7 @@ NB: Also see [Argo Getting Started](https://github.com/argoproj/argo/blob/master
 ## Validate yaml template:
 
 ```
-argo lint <template_name.yaml> # e.g., argo lint ~/tutorial/complete_evaluation.yaml
+argo lint <template_name.yaml> # e.g., argo lint ~/tutorial/evaluation.yaml
 ```
 
 ## Submit Argo workflow template
