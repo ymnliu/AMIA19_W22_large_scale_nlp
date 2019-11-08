@@ -71,10 +71,10 @@ docker run -it -v /home/amia/tutorial/:/data nlpieumn/ml /bin/bash -c "python /h
 docker run -it -v /home/amia/tutorial/:/data nlpieumn/ml /bin/bash -c "python /home/tutorial/ml.py"
 ```
 
-### Example to run mlp classifier
+### Example to run mlp classifier (or log/rf/bag/boost)
 
 ```
-docker run -it -v /home/amia/tutorial/:/data nlpieumn/ml /bin/bash -c "python /home/tutorial/glove300.py -c mlp"
+docker run -it -v /home/amia/tutorial/:/data nlpieumn/ml /bin/bash -c "python /home/tutorial/ml.py -c mlp"
 ```
 
 ### Example to run voting ML ensemble classifier
@@ -92,7 +92,7 @@ docker run -it -v /home/amia/tutorial/:/data nlpieumn/cnn /bin/bash -c "PYTHONHA
 ### Run docker container using mlp as background daemon process
 
 ```
-docker run -d -it -v /home/amia/tutorial/:/data nlpieumn/ml /bin/bash -c "python /home/tutorial/glove300.py -c mlp"
+docker run -d -it -v /home/amia/tutorial/:/data nlpieumn/ml /bin/bash -c "python /home/tutorial/ml.py -c mlp"
 ```
 
 ### Stop daemon process container 
@@ -105,7 +105,7 @@ docker stop <conatiner id>
 (NB: need to have adequate privs to do this!), specify version number `n`
 
 ```
-docker push nlpieumn/glove300
+docker push nlpieumn/ml
 ```
 
 ### Remove docker image
