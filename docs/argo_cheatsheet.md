@@ -11,7 +11,7 @@ NB: Also see [Argo Getting Started](https://github.com/argoproj/argo/blob/master
 ## Validate yaml template:
 
 ```
-argo lint <template_name.yaml>
+argo lint <template_name.yaml> # e.g., argo lint ~/tutorial/complete_evaluation.yaml
 ```
 
 ## Submit Argo workflow template
@@ -19,7 +19,8 @@ argo lint <template_name.yaml>
 (use the switch to `--watch` watch a workflow until it completes)
 
 ```
-argo submit <template_name.yaml>  #returns the workflow id as xxx-workflow-name-xxx
+argo submit <template_name.yaml>  # returns the workflow id as xxx-workflow-name-xxx
+# e.g., submit lint ~/tutorial/complete_evaluation.yaml
 ```
 
 ## List all workflows and their status
