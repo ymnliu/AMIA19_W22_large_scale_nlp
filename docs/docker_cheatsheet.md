@@ -21,7 +21,7 @@ docker images
 docker --help | more
 ```
 
-NB: Also see: [Docker Cheat Sheet](https://www.docker.com/sites/default/files/d8/2019-09/docker-cheat-sheet.pdf) 
+NB: Also see [Docker Cheat Sheet](https://www.docker.com/sites/default/files/d8/2019-09/docker-cheat-sheet.pdf) 
 
 ## Docker pull image from Docker Hub
 
