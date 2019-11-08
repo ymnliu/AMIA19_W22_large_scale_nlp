@@ -125,7 +125,7 @@ def get_predictive_model():
 
         # Print first 5 cases
         i = 0
-        for input_row, true_abbr, pred_abbr in zip(train_abbr.iterrows(), y_test, pred):
+        for input_row, true_abbr, pred_abbr in zip(test_abbr.iterrows(), y_test, pred):
 
             sn_start = max(input_row[1].start - 25, 0)
             sn_end = min(input_row[1].end + 25, len(input_row[1].text))
