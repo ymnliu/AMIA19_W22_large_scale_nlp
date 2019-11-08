@@ -9,13 +9,13 @@ Also, of note: target tells with block of code to use in the multi-stage build D
 DOCKER_BUILDKIT=1 docker build -t <image name> --target <target name> .
 ```
 
-## list all docker images on compute node
+## List all docker images on compute node
 
 ```
 docker images
 ```
 
-## Docker help (one page at a time)
+## Help (one page at a time)
 
 ```
 docker --help | more
@@ -23,13 +23,13 @@ docker --help | more
 
 NB: Also see [Docker Cheat Sheet](https://www.docker.com/sites/default/files/d8/2019-09/docker-cheat-sheet.pdf) 
 
-## Docker pull image from Docker Hub
+## Pull image from Docker Hub
 
 ```
 docker pull docker/whalesay
 ```
 
-## docker pull image from other repository
+## Pull image from other repository
 
 ```
 docker pull nlpieumn/ml
@@ -58,12 +58,6 @@ ls -la /data
 cat /etc/os-release
 ls /bin
 exit
-```
-
-
-### Docker pull from repo
-```
-docker pull nlpieumn/ml
 ```
 
 ### Example to run help to see available ml classifiers
