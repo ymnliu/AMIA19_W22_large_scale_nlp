@@ -13,20 +13,26 @@ spec:
 
   - name: nlp-eval
     steps:
-    - - name: svm
+    - - name: svm # run as parallel steps
         template: run-svm
 
-    - - name: log
+      - name: log
         template: run-log
 
-    - - name: mlp 
+      - name: mlp 
         template: run-mlp
 
-    - - name: bag 
+      - name: bag 
         template: run-bag
     
-    - - name: boost 
+      - name: boost 
         template: run-boost
+    
+      - name: rf 
+        template: run-rf
+    
+    - - name: ensemble # run as serial steps
+        template: run-ensemble
 
     - - name: cnn 
         template: run-cnn
@@ -76,6 +82,20 @@ spec:
         mountPath: /data
         readOnly: false
 
+  - name: run-rf
+    container:
+      image: nlpieumn/ml
+      imagePullPolicy: Never
+      env:
+        - name: DOCKER         
+          value: "True"
+      command: [sh, -c]
+      args: ["python ./ml.py -c rf"] 
+      volumeMounts:
+      - name: test-volume
+        mountPath: /data
+        readOnly: false
+
   - name: run-bag
     container:
       image: nlpieumn/ml
@@ -103,6 +123,20 @@ spec:
       - name: test-volume
         mountPath: /data
         readOnly: false
+
+  - name: run-ensemble
+    container:
+      image: nlpieumn/ml
+      imagePullPolicy: Never
+      env:
+        - name: DOCKER         
+          value: "True"
+      command: [sh, -c]
+      args: ["python ./ensemble.py"] 
+      volumeMounts:
+      - name: test-volume
+        mountPath: /data
+        readOnly: false
   
   - name: run-cnn
     container:
@@ -112,7 +146,7 @@ spec:
         - name: DOCKER         
           value: "True"
       command: [sh, -c]
-      args: ["python ./cnn.py"] 
+      args: ["PYTHONHASHSEED=0 python ./cnn.py"] 
       volumeMounts:
       - name: test-volume
         mountPath: /data
