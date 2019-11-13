@@ -201,7 +201,6 @@ def get_predictive_model():
         le.fit(target_names)
 
         print(classification_report(y_test_idx, y_pred.argmax(axis=1), target_names = le.classes_))
-
         
 
 @click.command()

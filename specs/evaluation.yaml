@@ -7,26 +7,32 @@ spec:
   volumes:
   - name: test-volume
     hostPath:
-      path: /home/opensuse/tutorial
+      path: /home/amia/tutorial
   
   templates:
 
   - name: nlp-eval
     steps:
-    - - name: svm
+    - - name: svm # run as parallel steps
         template: run-svm
 
-    - - name: log
+      - name: log
         template: run-log
 
-    - - name: mlp 
+      - name: mlp 
         template: run-mlp
 
-    - - name: bag 
+      - name: bag 
         template: run-bag
     
-    - - name: boost 
+      - name: boost 
         template: run-boost
+    
+      - name: rf 
+        template: run-rf
+    
+    - - name: ensemble # run as serial steps
+        template: run-ensemble
 
     - - name: cnn 
         template: run-cnn
@@ -36,13 +42,13 @@ spec:
   
   - name: run-svm
     container:
-      image: nlpieumn/glove300
+      image: nlpieumn/ml
       imagePullPolicy: Never
       env:
         - name: DOCKER         
           value: "True"
       command: [sh, -c]
-      args: ["python ./glove300.py"] 
+      args: ["python ./ml.py"] 
       volumeMounts:
       - name: test-volume
         mountPath: /data
@@ -50,13 +56,13 @@ spec:
 
   - name: run-log
     container:
-      image: nlpieumn/glove300
+      image: nlpieumn/ml
       imagePullPolicy: Never
       env:
         - name: DOCKER         
           value: "True"
       command: [sh, -c]
-      args: ["python ./glove300.py -c log"] 
+      args: ["python ./ml.py -c log"] 
       volumeMounts:
       - name: test-volume
         mountPath: /data
@@ -64,13 +70,27 @@ spec:
 
   - name: run-mlp
     container:
-      image: nlpieumn/glove300
+      image: nlpieumn/ml
       imagePullPolicy: Never
       env:
         - name: DOCKER         
           value: "True"
       command: [sh, -c]
-      args: ["python ./glove300.py -c mlp"] 
+      args: ["python ./ml.py -c mlp"] 
+      volumeMounts:
+      - name: test-volume
+        mountPath: /data
+        readOnly: false
+
+  - name: run-rf
+    container:
+      image: nlpieumn/ml
+      imagePullPolicy: Never
+      env:
+        - name: DOCKER         
+          value: "True"
+      command: [sh, -c]
+      args: ["python ./ml.py -c rf"] 
       volumeMounts:
       - name: test-volume
         mountPath: /data
@@ -78,13 +98,13 @@ spec:
 
   - name: run-bag
     container:
-      image: nlpieumn/glove300
+      image: nlpieumn/ml
       imagePullPolicy: Never
       env:
         - name: DOCKER         
           value: "True"
       command: [sh, -c]
-      args: ["python ./glove300.py -c bag"] 
+      args: ["python ./ml.py -c bag"] 
       volumeMounts:
       - name: test-volume
         mountPath: /data
@@ -92,13 +112,27 @@ spec:
   
   - name: run-boost
     container:
-      image: nlpieumn/glove300
+      image: nlpieumn/ml
       imagePullPolicy: Never
       env:
         - name: DOCKER         
           value: "True"
       command: [sh, -c]
-      args: ["python ./glove300.py -c boost"] 
+      args: ["python ./ml.py -c boost"] 
+      volumeMounts:
+      - name: test-volume
+        mountPath: /data
+        readOnly: false
+
+  - name: run-ensemble
+    container:
+      image: nlpieumn/ml
+      imagePullPolicy: Never
+      env:
+        - name: DOCKER         
+          value: "True"
+      command: [sh, -c]
+      args: ["python ./ensemble.py"] 
       volumeMounts:
       - name: test-volume
         mountPath: /data
@@ -112,7 +146,7 @@ spec:
         - name: DOCKER         
           value: "True"
       command: [sh, -c]
-      args: ["python ./cnn.py"] 
+      args: ["PYTHONHASHSEED=0 python ./cnn.py"] 
       volumeMounts:
       - name: test-volume
         mountPath: /data

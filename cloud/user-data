@@ -1,0 +1,37 @@
+#cloud-config
+ debug: True
+ ssh_pwauth: True
+ ssh_deletekeys: False
+ groups:
+   - docker
+ users:
+   - name: amia
+     sudo: ['ALL=(ALL) NOPASSWD:ALL']
+     groups: [sudo, cdrom, users, docker]
+ chpasswd:
+   list: |
+     amia:Tutorial2019
+   expire: False
+ packages:
+   - git
+   - nano
+   - docker
+   - kubectl
+   - minikube
+ runcmd:
+   - echo "ClientAliveInterval 60" >> /etc/ssh/sshd_config
+   - echo "ClientAliveCountMax 360" >> /etc/ssh/sshd_config
+   - export HOME="/home/amia"
+   - minikube config set memory 4096
+   - minikube config set vm-driver none
+   - minikube start --vm-driver=none
+   - chown -R amia:users /home/amia/.kube /home/amia/.minikube
+   - [curl, -sSL, -o, /usr/local/bin/argo, "https://github.com/argoproj/argo/releases/download/v2.4.2/argo-linux-amd64"]
+   - chmod +x /usr/local/bin/argo
+   - su - amia -c "kubectl create namespace argo"
+   - [su, -, amia, -c, "kubectl apply -n argo -f https://raw.githubusercontent.com/argoproj/argo/stable/manifests/install.yaml"]
+   - su - amia -c "kubectl create rolebinding default-admin --clusterrole=admin --serviceaccount=default:default"
+   - su - amia -c "docker pull nlpieumn/cnn"
+   - [su, -, amia, -c, "git clone https://github.com/nlpie/AMIA19_W22_large_scale_nlp.git /home/amia/tutorial"]
+   - echo "DOCKER_BUILDKIT=1" >> /home/amia/.bashrc
+   - systemctl restart sshd
