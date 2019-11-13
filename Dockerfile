@@ -6,8 +6,6 @@
 
 FROM continuumio/miniconda3 AS ml
 
-COPY scripts /home/tutorial
-
 RUN pip install numpy
 RUN pip install sklearn
 RUN pip install pandas
@@ -17,12 +15,12 @@ RUN pip install click
 
 RUN [ "python", "-c", "import nltk; nltk.download('punkt')" ]
 
+COPY scripts /home/tutorial
+
 WORKDIR /home/tutorial
 
 # build image for cnn  
 FROM continuumio/miniconda3 AS cnn
-
-COPY scripts /home/tutorial
 
 RUN pip install numpy
 RUN pip install sklearn
@@ -35,14 +33,16 @@ RUN pip install keras==2.2.4
 
 RUN [ "python", "-c", "import nltk; nltk.download('punkt')" ]
 
+COPY scripts /home/tutorial
+
 WORKDIR /home/tutorial
 
 # build image for vote  
 FROM continuumio/miniconda3 AS vote
 
-COPY scripts /home/tutorial
-
 RUN pip install sklearn
 RUN pip install pandas
+
+COPY scripts /home/tutorial
 
 WORKDIR /home/tutorial
