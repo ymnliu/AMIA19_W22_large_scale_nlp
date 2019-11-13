@@ -43,7 +43,7 @@ docker pull nlpieumn/ml
 ### Hello World
 
 ```
-docker run docker/whalesay cowsay boo
+docker run docker/whalesay cowsay "Hello W22"
 ```
 
 ### ssh into docker container
