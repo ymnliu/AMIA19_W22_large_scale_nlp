@@ -3,7 +3,7 @@
 ### Hands On
 
 #### 1. Accessing the Virtual Machine (VM)
-     ssh opensuse@<ip_address>
+     ssh amia@<ip_address>
      Password: Tutorial2019
 
 #### 2. Common Commands (notes: use of `-la`, `~`/`/home/opesuse` and possible run of `python ~/tutorial/scripts/ml.py`)
@@ -40,7 +40,7 @@
      
 #### 7. Let's use Kubernetes! (notes: build spec, `kubectl get es/svc`, `kubectl` run dnstools)
      kubectl get nodes
-     ls /home/opensuse/.kube
+     ls /home/amia/.kube
      kubectl get pods
      kubectl get pods --all-namespaces
      kubectl get services
