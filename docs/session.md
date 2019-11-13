@@ -6,7 +6,7 @@
      ssh amia@<ip_address>
      Password: Tutorial2019
 
-#### 2. Common Commands (notes: use of `-la`, `~/`, /home/opesuse` and possible run of `python ~/tutorial/scripts/ml.py`)
+#### 2. Common Commands (notes: use of `-la`, `~/`, `/home/amia` and possible run of `python ~/tutorial/scripts/ml.py`)
      ls     # list the files in a directory
      pwd    # display the current working directory
      cd     # change directories
@@ -15,7 +15,7 @@
      nano   # a way to edit text
      vim    # another, more complicated way to edit text
      
-#### 3. Explore your cloud image(notes: use of `-la`, and `~`/`/home/opesuse)
+#### 3. Explore your cloud image(notes: use of `-la`, and `~`/`, `/home/amia`)
      cat /etc/os-release
      ls /home/opensuse
      ls /bin
