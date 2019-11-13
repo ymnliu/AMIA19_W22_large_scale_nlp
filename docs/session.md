@@ -6,7 +6,7 @@
      ssh amia@<ip_address>
      Password: Tutorial2019
 
-#### 2. Common Commands (notes: use of `-la`, `~`/`/home/opesuse` and possible run of `python ~/tutorial/scripts/ml.py`)
+#### 2. Common Commands (notes: use of `-la`, `~/`, /home/opesuse` and possible run of `python ~/tutorial/scripts/ml.py`)
      ls     # list the files in a directory
      pwd    # display the current working directory
      cd     # change directories
