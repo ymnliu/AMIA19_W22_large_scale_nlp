@@ -7,7 +7,7 @@ spec:
   volumes:
   - name: test-volume
     hostPath:
-      path: /home/opensuse/tutorial
+      path: /home/amia/tutorial
   
   templates:
 
