@@ -34,8 +34,7 @@
 #### 6. Explore your docker image
      cat /etc/os-release
      ls /home/tutorial
-     ls /bin
-     
+     ls /bin 
      exit   # when you're done
      
 #### 7. Let's use Kubernetes! (notes: build spec, `kubectl get es/svc`, `kubectl` run dnstools)
@@ -46,8 +45,8 @@
      kubectl get services
      
 #### 8. Word Sense Disambiguation (WSD) (run of `python ~/tutorial/scripts/ml.py` from command line)
-     docker run -it -e DOCKER='True' -v /home/opensuse/tutorial:/data nlpieumn/ml 
-     /bin/bash -c "python /home/tutorial/ml.py -c svm"
+     docker run -it -e DOCKER='True' -v /home/amia/tutorial:/data nlpieumn/ml 
+     /bin/bash -c python /home/tutorial/ml.py -c svm
      
 #### 9. Let's use Argo!
      argo list
