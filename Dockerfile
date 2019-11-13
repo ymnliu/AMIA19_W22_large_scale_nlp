@@ -2,8 +2,6 @@
 # to build a particular target, speficy:
 # DOCKER_BUILDKIT=1 docker build -t <imagename> --target <target> .
 
-
-
 FROM continuumio/miniconda3 AS ml
 
 RUN pip install numpy
