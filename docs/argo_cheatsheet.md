@@ -20,7 +20,7 @@ argo lint <template_name.yaml> # e.g., argo lint ~/tutorial/specs/evaluation.yam
 
 ```
 argo submit <template_name.yaml>  # returns the workflow id as xxx-workflow-name-xxx
-# e.g., submit lint ~/tutorial/complete_evaluation.yaml
+
 ```
 
 ## List all workflows and their status
