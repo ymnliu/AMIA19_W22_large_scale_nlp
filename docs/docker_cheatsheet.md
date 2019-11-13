@@ -66,37 +66,37 @@ exit
 ### Example to run help to see available ml classifiers
 
 ```
-docker run -it -v /home/amia/tutorial/:/data nlpieumn/ml /bin/bash -c "python /home/tutorial/ml.py --help"
+docker run -it -v /home/amia/tutorial/:/data nlpieumn/ml /bin/bash -c python /home/tutorial/ml.py --help
 ```
 
 ### Example to run default - svm - classifier
 
 ```
-docker run -it -v /home/amia/tutorial/:/data nlpieumn/ml /bin/bash -c "python /home/tutorial/ml.py"
+docker run -it -v /home/amia/tutorial/:/data nlpieumn/ml /bin/bash -c python /home/tutorial/ml.py
 ```
 
 ### Example to run mlp classifier (or log/rf/bag/boost)
 
 ```
-docker run -it -v /home/amia/tutorial/:/data nlpieumn/ml /bin/bash -c "python /home/tutorial/ml.py -c mlp"
+docker run -it -v /home/amia/tutorial/:/data nlpieumn/ml /bin/bash -c python /home/tutorial/ml.py -c mlp
 ```
 
 ### Example to run voting ML ensemble classifier
 
 ```
-docker run -it -v /home/amia/tutorial/:/data nlpieumn/ml /bin/bash -c "python /home/tutorial/ensemble.py"
+docker run -it -v /home/amia/tutorial/:/data nlpieumn/ml /bin/bash -c python /home/tutorial/ensemble.py
 ```
 
 ### Example to run cnn/keras classifier
 
 ```
-docker run -it -v /home/amia/tutorial/:/data nlpieumn/cnn /bin/bash -c "PYTHONHASHSEED=0 python /home/tutorial/cnn.py"
+docker run -it -v /home/amia/tutorial/:/data nlpieumn/cnn /bin/bash -c PYTHONHASHSEED=0 python /home/tutorial/cnn.py
 ```
 
 ### Run docker container using mlp as background daemon process
 
 ```
-docker run -d -it -v /home/amia/tutorial/:/data nlpieumn/ml /bin/bash -c "python /home/tutorial/ml.py -c mlp"
+docker run -d -it -v /home/amia/tutorial/:/data nlpieumn/ml /bin/bash -c python /home/tutorial/ml.py -c mlp
 ```
 
 ### Stop daemon process container 
