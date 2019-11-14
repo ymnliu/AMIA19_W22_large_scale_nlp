@@ -2,7 +2,7 @@
 ## AMIA 2019, Washington, DC, 11/17/2019
 
 
-## 1. Accesse the Virtual Machine (VM)
+## 1. Access the Virtual Machine (VM)
      ssh amia@<your_ip_address>
 
 The password is (case sensitive): `Tutorial2019`
@@ -86,9 +86,7 @@ Build spec, `kubectl get es/svc`, `kubectl` run dnstools
      
 ## 7. Ensemble models for Word Sense Disambiguation (WSD) 
 
-The standalone script can also run as `python ~/tutorial/scripts/ml.py`. 
-
-To run svm classifier from within docker image:
+The standalone script can also run as `python ~/tutorial/scripts/ml.py`. To run svm classifier from within the docker image:
 
      docker run -it -e DOCKER='True' -v /home/amia/tutorial:/data nlpieumn/ml 
      /bin/bash -c python /home/tutorial/ml.py -c svm 
